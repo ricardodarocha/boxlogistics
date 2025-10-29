@@ -15,6 +15,8 @@ DEV Senior Developer
 
 ## Features do sistema
 
+Acesse o arquiov [main.c](https://github.com/ricardodarocha/boxlogistics/blob/main/src/main.c)
+
 // todos os cadastros sao listas duplamente encadeada, permitindo navegar pra frente e pra tras  
 // apenas cadastros auxiliares sao listas simplesmente encadeadas, porque tem poucos registros e nao tem necessidade de paginacao  
 // a visualizacao de listas possui suporte a paginacao, permitindo visualizar poucos registros por vez  
