@@ -1,6 +1,6 @@
 # Sobre
 
-Falar sobre a empresa e que ela faz
+Falar sobre a empresa e o que ela faz
 
 ## Time
 
@@ -39,6 +39,8 @@ Alguns recursos avançados do sistema incluem
 - Etiquetas e Certificações 
 - Logística Reversa
 - Controle de Cargas Perigosas
+
+
 
 ## Requisitos
 
