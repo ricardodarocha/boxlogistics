@@ -70,61 +70,10 @@ meu_programa/
 └── README.md
 ```
 
-## 👨‍💻 Divisão de responsabilidades (para o time)
-
-Papel	Diretório principal	Responsabilidade
-Gerente Técnico	lib/, include/	Mantém as tecnologias genéricas (lista, árvore, hash, etc.)
-Desenvolvedor de Domínio	models/	Define e mantém as structs e suas funções específicas (Produto, Cliente, etc.)
-Equipe de Customer Success / Aplicação	src/	Usa as libs e modelos para criar as regras do negócio e interface do programa
-🧱 Exemplo: include/listagenerica.h
-#ifndef LISTAGENERICA_H
-#define LISTAGENERICA_H
-
-typedef struct Nodo {
-    void *dados;
-    struct Nodo *prox;
-    struct Nodo *ant;
-} Nodo;
-
-typedef struct {
-    Nodo *inicio;
-    Nodo *fim;
-    int tamanho;
-} ListaGenerica;
-
-ListaGenerica *criar_lista();
-void inserir(ListaGenerica *lista, void *dados);
-void *buscar(ListaGenerica *lista, int (*comparar)(void*, void*), void *chave);
-void liberar_lista(ListaGenerica *lista, void (*destruir)(void*));
-
-#endif
-
-⚙️ Exemplo: lib/listagenerica.c
-#include <stdio.h>
-#include <stdlib.h>
-#include "../include/listagenerica.h"
-
-ListaGenerica *criar_lista() {
-    ListaGenerica *lista = malloc(sizeof(ListaGenerica));
-    lista->inicio = lista->fim = NULL;
-    lista->tamanho = 0;
-    return lista;
-}
-
-void inserir(ListaGenerica *lista, void *dados) {
-    Nodo *n = malloc(sizeof(Nodo));
-    n->dados = dados;
-    n->prox = NULL;
-    n->ant = lista->fim;
-    if (lista->fim)
-        lista->fim->prox = n;
-    else
-        lista->inicio = n;
-    lista->fim = n;
-    lista->tamanho++;
-}
+## 👨‍💻 Criação de novos arquivos
 
 📦 Exemplo: models/produto.c
+```C
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/produto.h"
@@ -140,8 +89,10 @@ Produto *criar_produto(int id, const char *nome, float valor) {
 void exibir_produto(Produto *p) {
     printf("ID: %d | Nome: %s | Valor: %.2f\n", p->id, p->nome, p->valor);
 }
+```
 
 🧩 Exemplo: include/produto.h
+```
 #ifndef PRODUTO_H
 #define PRODUTO_H
 
@@ -155,8 +106,114 @@ Produto *criar_produto(int id, const char *nome, float valor);
 void exibir_produto(Produto *p);
 
 #endif
+```
+Para criar um arquivo de cabeçalho no Code Blocks clique no menu File-new-file e na janela que aparecer escolha a opção header (cabeçalho).
+
+Como um arquivo de cabeçalho pode ser incluído em diversos arquivos diferentes, precisamos ter o cuidado de não carregá-lo mais de uma vez, isso irá duplicar nossas estruturas, funções e procedimentos podendo ocasionar em erros durante a execução do programa. Para evitar isso, podemos verificar se o arquivo já foi carregado por meio de uma estrutura if.
+
+O `ifndef significa if not defined`, ou seja, se não existir uma definição chamada `NOME_MODULO`, então essa definição será criada (na linha seguinte), assim como as estruturas serão criadas e as assinaturas das nossas funções e procedimentos.
+
+Caso a definição NOME_MODULO já exista, o fluxo de execução irá para endif e nada será feito.
+
+O nome NOME_MODULO não precisa ser exatamente assim. O importante é que seja exatamente o mesmo nome na primeira e segunda linhas do arquivo.h, deve ser um nome diferente pra cada arquivo.
+
+// arquivo pilha.h
+```
+#ifndef PILHA_H_INCLUDED
+#define PILHA_H_INCLUDED
+typedef struct no{
+    int valor;
+    struct no *proximo;
+}No;
+No* empilhar(No *pilha, int num);
+No* desempilhar(No **pilha);
+void imprimir(No *pilha);
+#endif 
+```
+
+Agora que já temos nosso arquivo de cabeçalhos, perceba que ele possui apenas as estruturas que iremos utilizar e as assinaturas das funções e procedimentos, das operações da nossa TAD. Precisamos criar propriamente estas funções e procedimentos. Para isso vamos criar um novo arquivo chamado pilha.c.
+
+É dentro deste arquivo pilha.c que teremos nossas funções e procedimentos para operar sobre nosso conjunto de dados, a pilha. Este arquivo precisa de dois includes, o arquivo de cabeçalho stdio.h, onde está definido a constante NULL e o arquivo de cabeçalho pilha.h que acabamos de criar.
+
+Observe que a inclusão do nosso arquivo fica entre um par de aspas duplas. Isso diz para o computador procurar este arquivo dentro do diretório do nosso projeto. Ao utilizar os sinais de maior e menor o compilador irá procurar este arquivo diretamente na pasta padrão do compilador, como stdio.h. Como o arquivo pilha.h está na pasta do projeto e não na pasta padrão do compilador, teremos um erro se tentarmos usar os sinais de maior menor no lugar das aspas duplas.
+
+// arquivo pilha.c
+```C
+#include <stdio.h>
+#include "pilha.h"
+No* empilhar(No *pilha, int num){
+    No *novo = malloc(sizeof(No));
+    if(novo){
+        novo->valor = num;
+        novo->proximo = pilha;
+        return novo;
+    }
+    else
+        printf("Erro ao alocar memoria!\n");
+    return NULL;
+}
+No* desempilhar(No **pilha){
+    No *remover = NULL;
+    if(*pilha){
+        remover = *pilha;
+        *pilha = remover->proximo;
+    }
+    else
+        printf("Pilha vazia!\n");
+    return remover;
+}
+void imprimir(No *pilha){
+    printf("\n\tPILHA\n");
+    while(pilha){
+        printf("\t%d\n", pilha->valor);
+        pilha = pilha->proximo;
+    }
+    printf("\n");
+}
+```
+
+Agora vamos criar nosso arquivo main.c. Neste arquivo, além dos includes que já estamos acostumados, também precisamos incluir nosso arquivo de cabeçalho pilha.h.
+
+Perceba que a função fatorial não está definida no arquivo pilha.h nem no arquivo pilha.c, isso porque esta função não é uma operação que age sobre nosso conjunto de dados, como empilhar, desempilhar ou imprimir. Isso faz parte da organização do código. Imagine que além da estrutura pilha, também tivéssemos uma fila e uma lista encadeada (estruturas que veremos aqui no curso), poderíamos ter mais quatro arquivos:
+– fila.h
+– fila.c
+– lista.h
+– lista.c
+
+Assim, cada arquivo contém o código de um TAD, deixando o código mais organizado e tornando a manutenção mais rápida e precisa.
+```C
+/*
+                 arquivo main.c
+                 Código escrito por Wagner Gaspar
+                 Julho de 2021
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include "pilha.h"
+int fatorial(int num){
+    No *remover, *pilha = NULL;
+    while(num > 1){
+        pilha = empilhar(pilha, num);
+        num--;
+    }
+    imprimir(pilha); // 2 3
+    while(pilha){
+        remover = desempilhar(&pilha);
+        num = num * remover->valor;
+        free(remover);
+    }
+    return num;
+}
+int main(){
+    int valor;
+    printf("Digite um valor maior que zero para o fatorial: ");
+    scanf("%d", &valor);
+    printf("\tFatorial de %d: %d\n", valor, fatorial(valor));
+}
+```
 
 🚀 Exemplo: src/main.c
+```C
 #include <stdio.h>
 #include "../include/listagenerica.h"
 #include "../include/produto.h"
@@ -177,8 +234,11 @@ int main() {
 
     return 0;
 }
+```
 
-🧰 Makefile simples
+## 🧰 Makefile simples
+
+```C
 CC = gcc
 CFLAGS = -Iinclude -Wall
 OBJ = lib/listagenerica.o models/produto.o src/main.o
@@ -191,11 +251,19 @@ meu_programa: $(OBJ)
 
 clean:
 	rm -f $(OBJ) meu_programa
+```
 
-💡 Benefícios dessa organização
+## 💡 Benefícios dessa organização
 
 ✅ Cada área tem autonomia sem interferir nas outras.
 ✅ Facilita testes isolados (por ex. make test-lib para testar lib/).
 ✅ Padroniza inclusão de headers (#include "../include/...").
 ✅ Evita dependências circulares.
 ✅ Fácil expansão — basta adicionar novas structs em models/.
+
+
+## Referencias bibliograficas
+
+1. https://wagnergaspar.com/como-criar-arquivos-de-cabecalho-h-na-linguagem-c/
+2. https://medium.com/@fabiano.salles/generic-linked-list-in-c-157dc49767bc
+
