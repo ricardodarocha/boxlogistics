@@ -1,5 +1,7 @@
 #include "../lib/menu.c"
 #include "../models/bd.c"
+#include "../models/produto.c"
+#include "../models/cliente.c"
 
 const char *menu_principal =
     "(1) Cadastrar\n"
@@ -24,10 +26,31 @@ const char *menu_relatorio =
 
 int executar_menu_cadastrar(){
   int operacao =  exibir_menu(menu_cadastrar);
+  switch (operacao) {
+      case 1:
+        cadastrar_produto();
+        break;
+      case 2:
+        cadastrar_cliente();
+        break;
+      case 0:
+        break;
+      default:
+          printf("operacao invalida\n");
+    }
 }
 
 int executar_menu_evento(){
-  int operacao =  exibir_menu(menu_evento);
+  int operacao =  exibir_menu(menu_evento);  
+  switch (operacao) {
+      case 1:
+        listarFila(&fila);
+        break;
+      case 0:
+        break;
+      default:
+          printf("operacao invalida\n");
+    }
 }
 
 int executar_menu_relatorio(){
