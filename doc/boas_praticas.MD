@@ -1,6 +1,11 @@
 # Boas práticas
 
 Este documento orienta os programadores do time a aderir ao guia de boas práticas, baseado nos conceitos mais modernos de boas práticas de desenvolvimento da comunidade de software.
+ - Ergonomia: São as decisões de fluxo de trabalho, equipamentos, ambiente e ferramentas do dia a dia que propiciem boa qualidade de vida, clareza, acessibilidade e bem estar dos programadores e testadores.
+ - Clean Code: Código Limpo é uma premissa de organização de código, escrita de código claro, de fácil leitura, fácil de dar manutenção e com baixa carga cognitiva (baixo tempo de aprendizado).
+ - SOLID: SOLID são princípios de Programação Orientada a Objetos POO mas que são aplicáveis em certa medida em todos os tipos de sistema, consitem em criar código preciso, unitário, coezo e com níveis certos de abstração.
+ - KISS: Sigla para Keep It Stupdly Simple, uma premissa que norteia a criação de código simples, que exija o menor esforço possível para a solução do problema do domínio específico
+ - DRY: Sigla para _Dont Repeat Yourself_ um lema do reaproveitamento de código e organização de modo a compartilhar código entre diferentes projetos ou de projetar fluxos de trabalho que minimizem a ação de copiar e colar.
 
 ## Regras gerais
 
@@ -10,11 +15,15 @@ Nomes de variável em português, sempre que possível, exceto convenções (*ma
 Componentes simples, pequenos, fáceis de entender
 Não usar funções complicadas
 Não usar lógica complicada
-Nomenclatura de variáveis
-nomeVariavel //pascalCase
-nomeEvento //pascalCase {onChange, onSubmit, etc.}
-NomeComponente //CamelCase
+Não usar código duplicado
+Evitar Referência Circular
 
+Nomenclatura de variáveis
+```C
+nomeVariavel  //pascalCase
+NomeStruct    //CamelCase
+nome_funcao() //snake_case()
+```
 
 ## Organização das pastas
 
@@ -24,6 +33,7 @@ Adotamos uma estrutura modular e escalável, ideal para um time de 3 pessoas com
 
 Organizar o projeto em camadas:
 
+```C
 lib/ → infraestrutura genérica (listas, árvores, utilitários)
 
 models/ → definições de structs de domínio (Produto, Cliente, etc.)
@@ -58,8 +68,10 @@ meu_programa/
 │
 ├── Makefile                    # Automação de build
 └── README.md
+```
 
-👨‍💻 Divisão de responsabilidades (para o time)
+## 👨‍💻 Divisão de responsabilidades (para o time)
+
 Papel	Diretório principal	Responsabilidade
 Gerente Técnico	lib/, include/	Mantém as tecnologias genéricas (lista, árvore, hash, etc.)
 Desenvolvedor de Domínio	models/	Define e mantém as structs e suas funções específicas (Produto, Cliente, etc.)
