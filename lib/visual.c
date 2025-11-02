@@ -4,7 +4,7 @@ void imprimir_nome_sistema() {
 
 int exibir_menu(const char *operacoes) {
     imprimir_nome_sistema();
-    printf("%s", operacoes);
+    printf("%s\n", operacoes);
 
     int menu_escolhido;
     printf("Escolha uma opção: ");
