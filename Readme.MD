@@ -42,9 +42,22 @@ Alguns recursos avançados do sistema incluem
 - Logística Reversa  
 - Controle de Cargas Perigosas  
 
-
-
 ## Requisitos
+
+ - [ ]  Validação do Usuário (ver se quem esta logando pode ter acesso ao
+sistema)
+- [ ]  (1) Cadastrar produtos (id, nome valor)
+- [ ]  (2) Cadastrar entregas (idProduto, CPF destinatário, nome destinatário)
+- [ ]  (3) Cadastrar cadastrar cargas com entregas (idCarga, diaSaidaCaminhao, lista de
+entregas)
+- [ ]  (4) Vender produto e mostrar a carga que ele pode entrar. (usar a dataSaidaCaminhao
+pra programar a entrega)
+- [ ]  (5) Relatórios (imprime as informações cadastradas).
+- [ ]  (6) Sair
+2) A apresentação do programa desenvolvido, contendo:
+• Nome da empresa e Logomarca;
+
+## Ideias
 
 //      produtos -> lista duplamente encadeada  
 //      veiculos -> tipo (caminhao) porte placa motorista origem(propria, terceiro) km(kilometragem)  
