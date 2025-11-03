@@ -1,14 +1,36 @@
 # Sobre
 
-Falar sobre a empresa e o que ela faz
+BOX LOGISTICS é uma startup mineira em desenvolvimento de sistemas retrô para o terminal   
+TUI Based applications  
+Works Forever  
+
+![](https://github.com/ricardodarocha/boxlogistics/blob/main/telas/box.PNG)
 
 ## Time
 
 Membros do time e funções
 
-|nome|funcao|
-|-|-|
-|COD|Ricardo|
+```
+   ╔══════════════════════════════════════════════════════════════╗
+   ║                                                              ║
+   ║     ╔══════════════════════╗    ╔══════════════════════╗     ║
+   ║     ║  Wemerson            ║    ║  Maria Eduarda       ║     ║
+   ║     ║  Analista            ║    ║  Customer Success    ║     ║
+   ║     ║  Dev Pleno           ║    ║  Testadora           ║     ║
+   ║     ╚══════════════════════╝    ╚══════════════════════╝     ║
+   ║     ╔══════════════════════╗    ╔══════════════════════╗     ║
+   ║     ║  Agatta              ║    ║  Otavio              ║     ║
+   ║     ║  Frontend            ║    ║  Database Admin      ║     ║
+   ║     ║  Designer            ║    ║  ORACLE MVP          ║     ║
+   ║     ╚══════════════════════╝    ╚══════════════════════╝     ║
+   ║     ╔══════════════════════╗    ╔══════════════════════╗     ║
+   ║     ║  Nathan              ║    ║  Ricardo             ║     ║
+   ║     ║  Product Owner       ║    ║  Tech Lead           ║     ║
+   ║     ║  Chefe Comercial     ║    ║  Dev Senior          ║     ║
+   ║     ╚══════════════════════╝    ╚══════════════════════╝     ║
+   ║                                                              ║
+   ╚══════════════════════════════════════════════════════════════╝
+```
 
 COD Cheif of Department
 DEV Senior Developer 
