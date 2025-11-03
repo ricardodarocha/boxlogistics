@@ -261,9 +261,88 @@ clean:
 ✅ Evita dependências circulares.
 ✅ Fácil expansão — basta adicionar novas structs em models/.
 
+## Configuração do terminal
+
+o terminal fica com caracteres estranhos como habilitar caracteres especiais no codigo para imprimri direto no terminal
+
+esse problema é muito comum em programas C que imprimem arte ASCII ou box drawings (como ╔═╗, ║ ║, ╚═╝).
+Quando o terminal mostra caracteres estranhos (�, ç, etc.), normalmente é por causa de incompatibilidade de codificação.
+Aqui vai um guia completo pra resolver em Windows, no seu código em C, no terminal e no VSCode/Dev-C++ 👇
+
+🧩 1️⃣ Entendendo o problema
+
+Esses caracteres (╔, ║, ╚, ─, etc.) fazem parte da tabela de caracteres estendida (OEM 437 ou 850).
+Mas o Windows Terminal, CMD ou VSCode geralmente usa UTF-8 (codepage 65001).
+
+Você precisa configurar o terminal e o código fonte para a mesma codificação.
+
+🧩 2️⃣ Soluções práticas
+✅ Opção 1 – Usar UTF-8 (recomendada)
+
+No início do seu main(), adicione:
+
+```C
+#include <windows.h>
+#include <stdio.h>
+
+int main(void) {
+    // Define UTF-8 no terminal
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+
+    printf("╔══════════════════════════════════════════╗\n");
+    printf("║   BEM-VINDO AO SISTEMA BOX LOGISTICS     ║\n");
+    printf("║              Versão 0.1 (2025)           ║\n");
+    printf("╚══════════════════════════════════════════╝\n");
+
+    return 0;
+}
+```
+
+
+💡 Certifique-se de que o arquivo .c está salvo em UTF-8 sem BOM (no VSCode: “Salvar com codificação → UTF-8”).
+💡 No terminal, digite antes de rodar:
+chcp 65001
+
+✅ Opção 2 – Usar o conjunto `OEM 437` (modo clássico do DOS)
+
+Se quiser rodar igual aos antigos sistemas DOS:
+
+```C
+#include <windows.h>
+#include <stdio.h>
+
+int main(void) {
+    SetConsoleOutputCP(437); // Código OEM dos box-drawings antigos
+
+    printf("╔══════════════════════════════════════════╗\n");
+    printf("║   BEM-VINDO AO SISTEMA BOX LOGISTICS     ║\n");
+    printf("║              Versão 0.1 (2025)           ║\n");
+    printf("╚══════════════════════════════════════════╝\n");
+
+    return 0;
+}
+```
+
+Digite no terminal: `chcp 437 `
+
+🎨 Isso garante compatibilidade com os caracteres da tabela ASCII estendida original (usada em Turbo C e DOS).
+
+🧩 3️⃣ Dica bônus — Teste automático de charset
+
+Você pode detectar se o terminal suporta UTF-8 e ajustar:
+
+UINT codepage = GetConsoleOutputCP();
+if (codepage != CP_UTF8) SetConsoleOutputCP(CP_UTF8);
+
+🧩 4️⃣ Verificação no VSCode
+
+Vá em Arquivo → Salvar com codificação → UTF-8 sem BOM
+
+Vá em Configurações → Terminal → Integrated: Set locale to UTF-8
+
 
 ## Referencias bibliograficas
 
 1. https://wagnergaspar.com/como-criar-arquivos-de-cabecalho-h-na-linguagem-c/
 2. https://medium.com/@fabiano.salles/generic-linked-list-in-c-157dc49767bc
-
