@@ -44,16 +44,16 @@ Alguns recursos avançados do sistema incluem
 
 ## Requisitos
 
- - [ ]  Validação do Usuário (ver se quem esta logando pode ter acesso ao
+ - [x]  Validação do Usuário (ver se quem esta logando pode ter acesso ao
 sistema)
-- [ ]  (1) Cadastrar produtos (id, nome valor)
+- [x]  (1) Cadastrar produtos (id, nome valor)
 - [ ]  (2) Cadastrar entregas (idProduto, CPF destinatário, nome destinatário)
 - [ ]  (3) Cadastrar cadastrar cargas com entregas (idCarga, diaSaidaCaminhao, lista de
 entregas)
 - [ ]  (4) Vender produto e mostrar a carga que ele pode entrar. (usar a dataSaidaCaminhao
 pra programar a entrega)
-- [ ]  (5) Relatórios (imprime as informações cadastradas).
-- [ ]  (6) Sair
+- [x]  (5) Relatórios (imprime as informações cadastradas).
+- [x]  (6) Sair
 2) A apresentação do programa desenvolvido, contendo:
 • Nome da empresa e Logomarca;
 
