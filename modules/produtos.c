@@ -15,13 +15,13 @@ int cursor_proximo_produto(void) {
 }
 
 void imprimir_cabecalho_produto() {
-    printf("%3s %-49s %8s\n%s", "id", "nome", "valor",
-    "============================================================\n" );
+    printf("  %3s %-49s %9s\n%s", "id", "nome", "valor",
+    " ═══════════════════════════════════════════════════════════════════\n" );
 }
 
 void iprimir_produto(void *dado) {
     Produto * p= dado;
-    printf("%03d %-49s %6.2f\n", p->id, p->nome, p->valor );
+    printf("  %03d %-49s %9.2f\n", p->id, p->nome, p->valor );
 }
 
 int localizar_produto(void *a, void *b) {
