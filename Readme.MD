@@ -1,8 +1,7 @@
 # Sobre
 
 BOX LOGISTICS é uma startup mineira em desenvolvimento de sistemas retrô para o terminal   
-TUI Based applications  
-Works Forever  
+TUI Based applications - Work Forever !!!
 
 ![](https://github.com/ricardodarocha/boxlogistics/blob/main/telas/box.PNG)
 
@@ -78,6 +77,10 @@ pra programar a entrega)
 - [x]  (6) Sair
 2) A apresentação do programa desenvolvido, contendo:
 • Nome da empresa e Logomarca;
+
+## Recursos mais recentes
+
+![](https://github.com/ricardodarocha/boxlogistics/blob/main/telas/ansi.PNG)
 
 ## Ideias
 
