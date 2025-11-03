@@ -23,6 +23,28 @@ void boas_vindas() {
     printf("   ║               © 2025  Box Logistics - The System             ║\n");
     printf("   ║                                                              ║\n");
     printf("   ╚══════════════════════════════════════════════════════════════╝\n");
+}
+
+void team() {
+    printf("   ╔══════════════════════════════════════════════════════════════╗\n");
+    printf("   ║                                                              ║\n");
+    printf("   ║     ╔══════════════════════╗    ╔══════════════════════╗     ║\n");
+    printf("   ║     ║  Wemerson            ║    ║  Maria Eduarda       ║     ║\n");
+    printf("   ║     ║  Analista            ║    ║  Customer Success    ║     ║\n");
+    printf("   ║     ║  Dev Pleno           ║    ║  Testadora           ║     ║\n");
+    printf("   ║     ╚══════════════════════╝    ╚══════════════════════╝     ║\n");
+    printf("   ║     ╔══════════════════════╗    ╔══════════════════════╗     ║\n");
+    printf("   ║     ║  Agatta              ║    ║  Otavio              ║     ║\n");
+    printf("   ║     ║  Frontend            ║    ║  Database Admin      ║     ║\n");
+    printf("   ║     ║  Designer            ║    ║  ORACLE MVP          ║     ║\n");
+    printf("   ║     ╚══════════════════════╝    ╚══════════════════════╝     ║\n");
+    printf("   ║     ╔══════════════════════╗    ╔══════════════════════╗     ║\n");
+    printf("   ║     ║  Nathan              ║    ║  Ricardo             ║     ║\n");
+    printf("   ║     ║  Product Owner       ║    ║  Tech Lead           ║     ║\n");
+    printf("   ║     ║  Chefe Comercial     ║    ║  Dev Senior          ║     ║\n");
+    printf("   ║     ╚══════════════════════╝    ╚══════════════════════╝     ║\n");
+    printf("   ║                                                              ║\n");
+    printf("   ╚══════════════════════════════════════════════════════════════╝\n");
     printf("\n");
 }
 
@@ -52,6 +74,10 @@ int main() {
     print_kpis();
 
     } while (input_logico("Deseja entrar com outro usuario?"));
+
+    boas_vindas();
+    team();
+    printf("Nosso time agradece a confiança!\n");
 
     desconectar(/*ARQUIVO*/);
     system("pause");
