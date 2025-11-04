@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../include/calendario.h"
+#include "../include/data.h"
 #include "../include/visual.h"
 #include "../include/cadastros.h"
 
@@ -21,7 +23,7 @@ void boas_vindas_simplificado(const char *title) {
 const char *menu_principal =
     "   (1) Cadastrar produtos     (4) Formulario de vendas         \n"
     "   (2) Cadastrar entregas     (5) Relatorios                   \n"
-    "   (3) Cadastrar cargas                                        \n"
+    "   (3) Cadastrar cargas       (6) Calendario                   \n"
     " ═══════════════════════════════════════════════════════════════════\n"
     "   (9) Configuracoes          (0) Sair\n"
     "";
@@ -88,6 +90,12 @@ void cadastrar_produtos() {
     }
 }
 
+void calendario() {
+    Data data = hoje();
+    imprimir_calendario(data.mes,data.ano);
+    system("pause");
+}
+
 void executar_menu_principal(int * continuar) {
     boas_vindas_simplificado("MENU PRINCIPAL");
     int operacao =  exibir_menu(menu_principal);
@@ -111,6 +119,14 @@ void executar_menu_principal(int * continuar) {
         case 4:
             boas_vindas_simplificado("VENDAS");
             // formulario_vendas();
+            break;
+        case 5:
+            boas_vindas_simplificado("RELATORIOS");
+            // relatorios();
+            break;
+        case 6:
+            boas_vindas_simplificado("CALENDARIO");
+            calendario();
             break;
         case 0:
             *continuar = 0;
