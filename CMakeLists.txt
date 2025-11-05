@@ -20,6 +20,8 @@ set(APP_SOURCES
 )
 
 set(LIB_SOURCES
+        lib/calendario.c
+        lib/data.c
         lib/visual.c
 )
 
