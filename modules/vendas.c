@@ -1,6 +1,6 @@
-#define SIZESS 50
+#include "../app/config.h"
 
 typedef struct {
-    char nome[SIZESS];
+    char nome[SIZES];
     float valor;
 } Venda;

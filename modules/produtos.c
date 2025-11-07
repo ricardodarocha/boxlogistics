@@ -5,10 +5,11 @@
 typedef struct {
     int id;
     char nome[INPUTSIZE];
+    char data[INPUTSIZE];
     float valor;
 } Produto;
 
-static int proximo_produto = 0;
+static int proximo_produto = 0; //id do proximo codigo que sera gerado pelo sistema = proximo_produto + 1
 
 int cursor_proximo_produto(void) {
     return proximo_produto;

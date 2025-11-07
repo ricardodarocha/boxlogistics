@@ -1,7 +1,11 @@
 #ifndef TFINAL_LISTA_DUPLA_H
 #define TFINAL_LISTA_DUPLA_H
 
-typedef struct ListaDupla ListaDupla;
+typedef struct ListaDupla{
+    void *dado;
+    struct ListaDupla *proximo;
+    struct ListaDupla *anterior;
+} ListaDupla;
 
 ListaDupla *criarListaDupla(void *dado);
 void inserirListaDupla(ListaDupla **lista, void *dado);

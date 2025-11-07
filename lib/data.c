@@ -52,9 +52,9 @@ int data_to_excel(int dia, int mes, int ano) {
 }
 
 int data_valida(int dia, int mes, int ano) {
-    if (ano <= 0) return false;
-    if (mes < 1 || mes > 12) return false;
-    if (dia < 1) return false;
+    if (ano <= 0) return 0;
+    if (mes < 1 || mes > 12) return 0;
+    if (dia < 1) return 0;
 
     int dias_mes[] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
 

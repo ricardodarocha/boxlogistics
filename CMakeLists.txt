@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.0)
+cmake_minimum_required(VERSION 3.16)
 project(TFinal C)
 
 set(CMAKE_C_STANDARD 23)
@@ -11,43 +11,44 @@ include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/generics
 )
 
-
-# Agrupamento de arquivos por tipo
+# Fontes da pasta app/
 set(APP_SOURCES
-        app.c
         app/bd.c
         app/login.c
+        app/demo.c
 )
 
+# Fontes da pasta lib/
 set(LIB_SOURCES
         lib/calendario.c
         lib/data.c
         lib/visual.c
 )
 
+# Fontes da pasta generics/
 set(GENERICS_SOURCES
+        generics/arvore.c
+        generics/fila.c
         generics/lista_dupla.c
+        generics/pilha.c
 )
 
+# Fontes da pasta modules/
 set(MODULES_SOURCES
         modules/cadastros.c
-        modules/cargas.c
-        modules/entregas.c
 )
 
-# Cria o executável incluindo todos os arquivos na ordem correta
+# Executável final
 add_executable(TFinal
+        main.c
         ${APP_SOURCES}
         ${LIB_SOURCES}
         ${GENERICS_SOURCES}
         ${MODULES_SOURCES}
-        ${MISC_SOURCES}
 )
 
-
-# (Opcional) mensagens para debug do CMake
+# Debug helpers
 message(STATUS "Arquivos APP: ${APP_SOURCES}")
 message(STATUS "Arquivos LIB: ${LIB_SOURCES}")
 message(STATUS "Arquivos GENERICS: ${GENERICS_SOURCES}")
 message(STATUS "Arquivos MODULES: ${MODULES_SOURCES}")
-message(STATUS "Arquivos MISC: ${MISC_SOURCES}")

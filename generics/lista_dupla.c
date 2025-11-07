@@ -1,15 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "../include/lista_dupla.h"
 /**
 Lista duplamente encadeada generica
  - aceita qualquer struct como conteudo
  - implmeentaementa os metodos inserir, pesquisar, irmpirmir
  */
-typedef struct ListaDupla{
-    void *dado;
-    struct ListaDupla *proximo;
-    struct ListaDupla *anterior;
-} ListaDupla;
 
 ListaDupla *criarListaDupla(void *dado) {
     ListaDupla *no = malloc(sizeof(ListaDupla));
@@ -68,3 +64,4 @@ void limparDuplo(ListaDupla *lista) {
         free(lixo);
     }
 }
+

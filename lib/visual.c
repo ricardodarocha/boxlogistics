@@ -28,6 +28,20 @@ void enable_ansi(void) {
 #define margem 4
 #define vert 2
 
+/* Guia de estilos
+        ╔════════════════════════════╗
+        ║          Premium           ║   Estetica Premium/Bold
+        ╚════════════════════════════╝
+
+        ┌────────────────────────────┐
+        │   Fina / Estilo Minimal    │   Estética Clean/Slin
+        └────────────────────────────┘
+
+        ╔════════════════════════════╗
+        ║  Híbrida ────────────────  ║   Estetica Soft/Hybrid
+        ╚════════════════════════════╝
+ */
+
 void cursorxy(int x, int y) {
     printf("\x1b[%d;%dH", y, x);
 }
@@ -134,6 +148,7 @@ void input_data_mascarada_validada(const char *title, char *out) {
         digits[4], digits[5], digits[6], digits[7]);
 
     printf("\n");
+    input_flush();
 }
 void input_data_valid(const char *title, char *out) {
     char digits[9] = {0};
@@ -179,6 +194,7 @@ void input_data_valid(const char *title, char *out) {
         digits[4], digits[5], digits[6], digits[7]);
 
     printf("\n");
+    input_flush();
 }
 void input_string_required(const char *title, char *out, size_t size) {
     for (;;) {
@@ -203,6 +219,7 @@ void input_string_required(const char *title, char *out, size_t size) {
 
         break;
     }
+    input_flush();
 }
 
 void input_moeda(const char *title, float *out) {
@@ -231,22 +248,26 @@ void input_moeda(const char *title, float *out) {
         *out = val;
         break;
     }
+    input_flush();
 }
 
 void input_inteiro(char *title, int *out) {
     printf(" %s: ",  title);
     scanf("%d", out);
+    input_flush();
 }
 
 void input_float(char *title, float *out) {
     printf(" %s: ",  title);
     scanf("%f", out);
+    input_flush();
 }
 
 int input_logico(char *title) {
     char selected;
     printf(" %s: (S/N) ",  title);
-    scanf("%c", &selected);
+    scanf(" %c", &selected);
+    input_flush();
     return (selected == 'S' || selected == 's'|| selected == 'Y'|| selected == 'y' ? 1 : 0);
 }
 
