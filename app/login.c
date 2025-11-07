@@ -1,11 +1,15 @@
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 
 #include "config.h"
+#include "../include/login.h"
 #include "../include/visual.h"
 #define ACESSO_NEGADO 0
 #define ACESSO_CONCEDIDO 1
+
+char _login[INPUTSIZE];
 
 void boas_vindas_ao_sistema(const char *login) {
     printf("\nBem vindo ao sistema %s\n", login);
@@ -49,10 +53,10 @@ int admin(char * login) {
     return ACESSO_CONCEDIDO;
 }
 
-void verificar_permissoes(char * login) {
+int verificar_permissoes(char * login) {
     //aqui verificamos permissoes do usuario
     //por exemplo se o modulo balanca esta habilitado para um usuario
-    return ;
+    return ACESSO_CONCEDIDO;
 }
 
 int efetuar_login(char * login) {

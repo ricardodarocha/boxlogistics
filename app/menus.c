@@ -1,24 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../include/calendario.h"
+#include "../app/operacoes.c"
 #include "../include/data.h"
 #include "../include/visual.h"
-#include "../include/cadastros.h"
-
-void boas_vindas_simplificado(const char *title) {
-
-    printf("╔═══════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-60s      ║\n",  title);
-    printf("║ %-40s %25s ║\n", "BOX LOGISTICS", "Versão 0.1 (2025)");
-    printf("╚═══════════════════════════════════════════════════════════════════╝\n");
-
-    // printf("╔═════════════════════════════════════════════════════════════════════╗\n");
-    // printf("║                           MENU DE VENDAS                            ║
-    // printf("║ BOX LOGISTICS                                (Versão 0.1 2025)      ║
-    // printf("╚═════════════════════════════════════════════════════════════════════╝\n");
-
-}
 
 const char *menu_principal =
     "   (1) Cadastrar produtos     (4) Formulario de vendas         \n"
@@ -40,6 +25,7 @@ const char *menu_cadastrar_entregas =
     "   (1) Inserir entrega\n"
     "   (2) Buscar entrega\n"
     "   (3) Listar entregas\n"
+    "   (4) Ajuda\n"
     " ═══════════════════════════════════════\n"
     "   (9) Configuracoes\n"
     "   (0) Voltar\n";
@@ -70,18 +56,35 @@ void cadastrar_produtos() {
     int operacao =  exibir_menu(menu_cadastrar_produtos);
     switch (operacao) {
         case 1:
-            inserir_produtos();
+            executar_cadastro_produtos();
             break;
         case 2:
-            int id;
-            printf("Informe o id do produto para buscar\n");
-            input_inteiro("ID", &id);
-            buscar_produtos(id);
+            executar_busca_produtos();
             break;
         case 3:
-            system("cls");
-            boas_vindas_simplificado("RELATORIO DE PRODUTOS");
-            listar_produtos();
+            executar_listar_produtos();
+            break;
+        case 0:
+            return;
+        default:
+            printf("operacao invalida\n");
+    }
+}
+
+void cadastrar_entregas() {
+    int operacao =  exibir_menu(menu_cadastrar_entregas);
+    switch (operacao) {
+        case 1:
+            executar_cadastro_entregas();
+            break;
+        case 2:
+            executar_busca_entregas();
+            break;
+        case 3:
+            executar_listar_entregas();
+            break;
+        case 4:
+            executar_ajuda_sistema_entregas();
             break;
         case 0:
             return;
@@ -104,13 +107,13 @@ void executar_menu_principal(int * continuar) {
         case 1:
             boas_vindas_simplificado("CADASTRO DE PRODUTOS");
             if (qtd_produtos() == 0) {
-                inserir_produtos();
+                inserir_produto();
             }
             cadastrar_produtos();
             break;
         case 2:
             boas_vindas_simplificado("CADASTRO DE ENTREGAS");
-            // cadastrar_entregas();
+            cadastrar_entregas();
             break;
         case 3:
             boas_vindas_simplificado("CADASTRO DE CARGAS");
