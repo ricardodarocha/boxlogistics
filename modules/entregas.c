@@ -7,16 +7,17 @@
 typedef struct {
     int id;
     int id_produto;
-    float valor; //quantidade
+    float valor;
+    float quant;
     char destinatario[SIZES]; //nome do destinatario
     // char cpf[SIZES];
     int cpf;
 } Entrega;
 
-static int proximo_entrega = 0; //id do proximo codigo que sera gerado pelo sistema = proximo_entrega + 1
+static int proxima_entrega = 0; //id do proximo codigo que sera gerado pelo sistema = proximo_entrega + 1
 
-int cursor_proximo_entrega(void) {
-    return proximo_entrega;
+int cursor_proxima_entrega( ) {
+    return proxima_entrega;
 }
 
 void imprimir_cabecalho_entrega() {
@@ -32,7 +33,7 @@ void imprimir_cabecalho_entrega() {
     //   3 volumes                                   titak          303033
     // ╚═════════════════════════════════════════════════════════════════════╝
 
-    printf("  %3s %-49s %9s\n", "id", "nome", "quant" );
+    // printf("  %3s %-49s %9s\n", "  id", "nome", "quant" );
 }
 
 int localizar_entrega(void *a, void *b) {
@@ -50,15 +51,16 @@ int validar_entrega(void *dado) {
 Entrega *alocar_entrega(void) {
     Entrega *entrega = malloc(sizeof(Entrega));
     if (!entrega) {
-        perror("malloc");
+        perror("Erro ao alocar Entrega");
         return NULL;
     }
 
-    // Valores padrao
-    entrega->id = proximo_entrega += 1;
+    entrega->id = ++proxima_entrega;
+
     entrega->id_produto = 0;
     entrega->destinatario[0] = '\0';
     entrega->cpf = 0;
+    entrega->quant = 1.0f;
     entrega->valor = 1.0f;
 
     return entrega;

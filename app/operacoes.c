@@ -62,7 +62,8 @@ void executar_cadastro_entregas() {
         input_inteiro("ID", &id_produto);
         id_produto = buscar_produto_id(id_produto); //0 se nao encontrado
         if (id_produto == 0) {
-            printf("Produto nao encontrado");
+            alerta("AVISO", "PRODUTO NÃO ENCONTRADO");
+            system("PAUSE");
             return;
         }
         int id_entrega = inserir_entregas(id_produto, &id_cliente);

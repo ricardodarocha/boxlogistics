@@ -11,13 +11,13 @@ typedef struct {
 
 static int proximo_produto = 0; //id do proximo codigo que sera gerado pelo sistema = proximo_produto + 1
 
-int cursor_proximo_produto(void) {
+int cursor_proximo_produto( ) {
     return proximo_produto;
 }
 
 void imprimir_cabecalho_produto() {
     printf("  %3s %-49s %9s\n%s", "id", "nome", "valor",
-    " ═══════════════════════════════════════════════════════════════════\n" );
+                    "───────────────────────────────────────────────────────────────────\n");
 }
 
 void iprimir_produto(void *dado) {

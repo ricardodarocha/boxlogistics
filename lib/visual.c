@@ -268,7 +268,7 @@ int input_logico(char *title) {
     printf(" %s: (S/N) ",  title);
     scanf(" %c", &selected);
     input_flush();
-    return (selected == 'S' || selected == 's'|| selected == 'Y'|| selected == 'y' ? 1 : 0);
+    return (selected == 'S' || selected == 's'|| selected == 'Y'|| selected == 'y'|| selected == '1' ? 1 : 0);
 }
 
 void input_senha(const char *title, char *out, size_t max_len) {
@@ -369,3 +369,22 @@ void imprimir_calendario(int mes, int ano) {
     printf("%s\n", BR);
 }
 
+void alerta(const char *title, const char *message){
+    printf("▄▄  %-10s▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄\n", title);
+    printf("█                                               █\n");
+    printf("█  %-43s   █\n", message);
+    printf("█                                               █\n");
+    printf("█────────────────┐──────────────────────────────█\n");
+    printf("█       OK       │                              █\n");
+    printf("▀────────────────┘──────────────────────────────▀\n");
+}
+void alerta2(const char *title, const char *message, const char *message2){
+    printf("▄▄  %-10s▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄\n", title);
+    printf("█                                               █\n");
+    printf("█  %-43s   █\n", message);
+    printf("█  %-43s   █\n", message2);
+    printf("█                                               █\n");
+    printf("█────────────────┐──────────────────────────────█\n");
+    printf("█       OK       │                              █\n");
+    printf("▀────────────────┘──────────────────────────────▀\n");
+}

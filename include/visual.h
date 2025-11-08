@@ -21,4 +21,7 @@ void input_senha(const char *title, char *out, size_t max_len);
 
 void imprimir_calendario(int me,int ano);
 
+void alerta(const char *title, const char *message);
+void alerta2(const char *title, const char *message, const char *message2);
+
 #endif

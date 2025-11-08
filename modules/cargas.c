@@ -18,7 +18,7 @@ int cursor_proxima_carga(void) {
 
 void imprimir_cabecalha_carga() {
     printf("  %3s %-49s %9s\n%s", "id", "nome", "valor",
-    " ═══════════════════════════════════════════════════════════════════\n" );
+                    "───────────────────────────────────────────────────────────────────\n");
 }
 
 void iprimir_carga(void *dado) {

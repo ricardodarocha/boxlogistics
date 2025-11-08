@@ -48,7 +48,7 @@ int inserir_entregas(int id_produto, int * id_cliente);
 void * buscar_entregas(const int id);
 
 //funcao especial para agrupar entrega por destinatario;
-void iprimir_entrega_ag(void *dado,  char * destinatario[SIZES]);
+void iprimir_entrega_ag(void *dado,  char * destinatario[SIZES], float * agregado);
 
 void listar_entregas();
 

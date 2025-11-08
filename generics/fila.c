@@ -43,26 +43,31 @@ void *peek_fila(Fila *f) {
 }
 
 int filaVazia(Fila *f) {
-    return f->inicio == NULL;
+    return (f == NULL || f->inicio == NULL);
 }
 
 void imprimirFila(Fila *f, void (*imprimir)(void *)) {
+    if (f == NULL || f->inicio == NULL) {
+        printf("Fila vazia.\n");
+        return;
+    }
     for (FilaX *cur = f->inicio; cur; cur = cur->proximo)
         imprimir(cur->dado);
     printf("=== Fim da Fila ===\n");
 }
 
 //Esta funcao permite usar um agregador por exemplo order by name
-void imprimirFilaAg(Fila *f, void (*imprimir_agregado)(void *, char *[SIZES]), char * ag[SIZES]) {
+void imprimirFilaAg(Fila *f, void (*imprimir_agregado)(void *, char *[SIZES], float * agregado), char * ag[SIZES], float * agregado) {
+    if (f == NULL || f->inicio == NULL) {
+        printf("Fila vazia.\n");
+        return;
+    }
     for (FilaX *cur = f->inicio; cur; cur = cur->proximo)
-        imprimir_agregado(cur->dado, ag);
+        imprimir_agregado(cur->dado, ag, agregado);
 }
 
 void *pesquisarFila(Fila *fila, void *alfa, int (*cmp)(void*, void*)) {
-    if (fila == NULL || fila->inicio == NULL) {
-        printf("Fila vazia.\n");
-        return NULL;
-    }
+
     for (FilaX *cursor = fila->inicio; cursor; cursor = cursor->proximo)
         if (cmp(cursor->dado, alfa) == 0)
             return cursor->dado;

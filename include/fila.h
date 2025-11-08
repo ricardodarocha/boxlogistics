@@ -18,7 +18,7 @@ void *desenfileirar(Fila *f);
 void *peek_fila(Fila *f);
 int filaVazia(Fila *f);
 void imprimirFila(Fila *f, void (*imprimir)(void *));
-void imprimirFilaAg(Fila *f, void (*imprimir_agregado)(void *, char *[SIZES]), char * ag[SIZES]);
+void imprimirFilaAg(Fila *f, void (*imprimir_agregado)(void *, char *[SIZES], float * agregado), char * ag[SIZES], float * agregado);
 void *pesquisarFila(Fila *fila, void *alfa, int (*cmp)(void*, void*));
 void limparFila(Fila *f);
 
