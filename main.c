@@ -48,7 +48,21 @@ void volte_sempre() {
     5. encerra o sistema
 */
 
+int le_parametros(int argc, char * argv[]) {
+    if (argc == 1) {
+        printf("Nenhum parâmetro informado.\n");
+        return 0;
+    }
+
+    printf("Parametros recebidos:\n");
+    for (int i = 1; i < argc; i++) {
+        printf("  %s\n", argv[i]);
+        return argc;
+    }
+}
+
 int main(int argc, char * argv[]) {
+    le_parametros(argc, argv);
     enable_ansi();
 
     do {

@@ -9,6 +9,7 @@ typedef struct {
     int id_produto;
     float valor;
     float quant;
+    float total;
     char destinatario[SIZES]; //nome do destinatario
     // char cpf[SIZES];
     int cpf;
@@ -18,6 +19,12 @@ static int proxima_entrega = 0; //id do proximo codigo que sera gerado pelo sist
 
 int cursor_proxima_entrega( ) {
     return proxima_entrega;
+}
+
+void imprimir_entrega(void *dado) {
+    Entrega *e = dado;
+    printf("  │ %02d │ %-40s│ %10.2f    │\n",
+           e->id, e->destinatario, e->valor);
 }
 
 void imprimir_cabecalho_entrega() {
@@ -41,13 +48,6 @@ int localizar_entrega(void *a, void *b) {
     return pa->id == pb->id ? FOUND : NOTFOUND;
 }
 
-int validar_entrega(void *dado) {
-    Entrega * e= dado;
-
-    //pode ser criada uma validacao personalizada
-    return VALID;
-}
-
 Entrega *alocar_entrega(void) {
     Entrega *entrega = malloc(sizeof(Entrega));
     if (!entrega) {
@@ -62,6 +62,35 @@ Entrega *alocar_entrega(void) {
     entrega->cpf = 0;
     entrega->quant = 1.0f;
     entrega->valor = 1.0f;
+    entrega->total = 1.0f;
 
     return entrega;
+}
+
+Entrega *nova_entrega(char *destinatario, int id_produto, float valor, float quant, int cpf) {
+    Entrega * result = alocar_entrega();
+    strcpy(result->destinatario, destinatario);
+    result->id_produto = id_produto;
+    result->valor = valor;
+    result->quant = quant;
+    result->total = quant  * valor;
+    result->cpf = cpf; //todo! inserir CPF como string
+    return result;
+}
+
+int validar_entrega(void* dado, char* message) {
+    Entrega *e = dado;
+    if (e->valor <= 0) {
+        strcpy(message, "Informe um valor");
+        return INVALID;
+    }
+    if (e->quant <= 0) {
+        strcpy(message, "Informe uma quantidade");
+        return INVALID;
+    }
+    if (e->cpf == 0) {
+        strcpy(message, "Informe um cpf");
+        return INVALID;
+    }
+    return VALID;
 }

@@ -13,6 +13,10 @@ void imprimir_data_excel(int serial);
 
 int serial_de_data(int dia, int mes, int ano);
 
-void imprimir_calendario(int mes, int ano);
+#define SIZEDATE 11
+
+char* formatar_data(int serial);
+
+int serial_de_data_str(const char *data_str[SIZEDATE]);
 
 #endif

@@ -2,6 +2,8 @@
 #include "../include/data.h"
 #include "../include/calendario.h"
 
+#include <stdlib.h>
+
 int serial_1_jan_1900 = 1;
 
 const char* d_semana(int ddd) {
@@ -67,6 +69,38 @@ void imprimir_data_excel(int serial) {
     printf("%04d %02d %02d %03d\n", ano, mes + 1, dia, ddd);
 }
 
+char* formatar_data(int serial) {
+    int dias_no_mes[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    int ano = 1900;
+    int dia_restante = serial;
+
+    while (1) {
+        int dias_ano = eh_bissexto(ano) ? 366 : 365;
+        if (dia_restante > dias_ano) {
+            dia_restante -= dias_ano;
+            ano++;
+        } else {
+            break;
+        }
+    }
+
+    if (eh_bissexto(ano))
+        dias_no_mes[1] = 29;
+
+    int mes = 0;
+    while (dia_restante > dias_no_mes[mes]) {
+        dia_restante -= dias_no_mes[mes];
+        mes++;
+    }
+
+    int dia = dia_restante;
+
+    char *saida = malloc(11); // dd/mm/yyyy + '\0'
+    sprintf(saida, "%02d/%02d/%04d", dia, mes + 1, ano);
+    return saida;
+}
+
 int serial_de_data(int dia, int mes, int ano) {
     int s = serial_1_jan_1900;
     for (int y = 1900; y < ano; y++)
@@ -75,6 +109,14 @@ int serial_de_data(int dia, int mes, int ano) {
         s += dias_no_mes(m, ano);
     s += dia - 1;
     return s;
+}
+
+int serial_de_data_str(const char *data_str[SIZEDATE]) {
+    int dia, mes, ano;
+    if (sscanf(data_str, "%d/%d/%d\0", &dia, &mes, &ano) != 3) {
+        return -1;
+    }
+    return serial_de_data(dia, mes, ano);
 }
 
 // int main() {

@@ -38,6 +38,25 @@ void *desenfileirar(Fila *f) {
     return dado;
 }
 
+void *remover(Fila *f, void *alfa, int (*cmp)(void*, void*)){
+    if (!f || !f->inicio) return NULL;
+    FilaX *anterior = NULL;
+    FilaX *remover = f->inicio;
+    while (remover && cmp(remover->dado, alfa)) {
+        anterior = remover;
+        remover = remover->proximo;
+    }
+    if (remover==NULL)  return NULL;
+    void *dado = remover->dado;
+    if (anterior==NULL) {
+        f->inicio = remover->proximo;
+    } else {
+        anterior->proximo = remover->proximo;
+    }
+    free(remover);
+    return dado;
+}
+
 void *peek_fila(Fila *f) {
     return (f && f->inicio) ? f->inicio->dado : NULL;
 }
@@ -66,8 +85,9 @@ void imprimirFilaAg(Fila *f, void (*imprimir_agregado)(void *, char *[SIZES], fl
         imprimir_agregado(cur->dado, ag, agregado);
 }
 
-void *pesquisarFila(Fila *fila, void *alfa, int (*cmp)(void*, void*)) {
-
+void *buscarFila(Fila *fila, void *alfa, int (*cmp)(void*, void*)) {
+    if (fila == NULL) return NULL;
+    if (fila->inicio == NULL) return NULL;
     for (FilaX *cursor = fila->inicio; cursor; cursor = cursor->proximo)
         if (cmp(cursor->dado, alfa) == 0)
             return cursor->dado;

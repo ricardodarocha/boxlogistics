@@ -1,11 +1,19 @@
 #include "../include/bd.h"
 #include "../include/cadastros.h"
+
+#include "calendario.h"
+#include "data.h"
 #include "../include/visual.h"
 #include "../modules/produtos.c"
 #include "../modules/clientes.c"
 #include "../modules/entregas.c"
 #include "../modules/cargas.c"
 #include "../modules/vendas.c"
+
+typedef struct {
+  int total_itens;
+  float soma_valores;
+} AcumuladorCarga;
 
 // ================= indicadores  ====================
 int qtd_produtos( ) {
@@ -43,15 +51,22 @@ int inserir_produto(){
   //==================================================================
 }
 
-void * buscar_produto(const int id) {
+void imprimir_ficha_produto(Produto * pro) {
+  printf("  ┌──────────────────────────────────────────────────────────────┐\n");
+  printf("  │               PRODUTO DISPONIVEL %-4d                        │\n", pro->id);
+  printf("  ├─────────────────────┬────────────────────────────────────────┤\n");
+  printf("  │           DESCRICAO │ %s\n", pro->nome);
+  printf("  │               PRECO │ %-11.2f %26s │\n", pro->valor, "");
+  printf("  └─────────────────────┴────────────────────────────────────────┘\n");
+}
+
+void buscar_produto(const int id) {
     Produto chave = {0};
     Produto *encontrado = NULL;
     chave.id = id;
     encontrado = pesquisarDuplo(bd()->produtos, &chave, localizar_produto);
-    if (encontrado) {
-      return encontrado;
-    }
-    return NULL;
+    if (encontrado)
+      imprimir_ficha_produto(encontrado);
 }
 
 int buscar_produto_id(const int id) {
@@ -97,7 +112,7 @@ int inserir_cliente(){
   //==================== ler os campos do cliente ====================
   printf(      "               ID: %03d\n", novo_cliente->id);
   input_string(" NOME DO CLIENTE", novo_cliente->nome, sizeof(novo_cliente->nome));
-  printf("                   CPF: %d", cpf);
+  // printf("                   CPF: %d", cpf);
   novo_cliente->cpf = cpf;
 
   validar_cliente(novo_cliente);
@@ -121,6 +136,17 @@ void listar_clientes() {
   system("pause");
 }
 //====================
+int imprimir_ficha_entrega(Entrega * entrega, Produto * produto) {
+  printf("  ┌──────────────────────────────────────────────────────────────┐\n");
+  printf("  │               FICHA DE ENTREGA %-4d                          │\n", entrega->id);
+  printf("  ├─────────────────────┬────────────────────────────────────────┤\n");
+  printf("  │        DESTINATARIO │ %-38s │\n", entrega->destinatario);
+  printf("  └─────────────────────┼────────────────────────────────────────┘\n");
+  printf("  ┌─────────────────────┬────────────────────────────────────────┐\n");
+  printf("  │                  ID │ %03d            1×%.0f\n", entrega->id_produto, entrega->valor);
+  printf("  │             PRODUTO │ %s\n", produto->nome);
+  printf("  └─────────────────────┴────────────────────────────────────────┘\n");
+}
 
 int inserir_entregas(int id_produto, int *id_cliente) {
     // --- Pré-condição: id_produto já deve ser válido (executar_cadastro_entregas o garantiu) ---
@@ -150,12 +176,7 @@ int inserir_entregas(int id_produto, int *id_cliente) {
     system("pause");
     return 0;
   } else {
-    printf("  ┌──────────────────────────────────────────────────────────────┐\n");
-    printf("  │               PRODUTO DISPONIVEL %-4d                        │\n", pe->id);
-    printf("  ├─────────────────────┬────────────────────────────────────────┤\n");
-    printf("  │           DESCRICAO │ %s\n", pe->nome);
-    printf("  │               PRECO │ %-7.2f %30s │\n", pe->valor, "");
-    printf("  └─────────────────────┴────────────────────────────────────────┘\n");
+    imprimir_ficha_produto(pe);
   }
 
   // Se id_cliente não definido, criar e guardar no ponteiro
@@ -230,18 +251,11 @@ int inserir_entregas(int id_produto, int *id_cliente) {
 
     }
     printf("\n");
-    printf("  ┌──────────────────────────────────────────────────────────────┐\n");
-    printf("  │               ENTREGA INSERIDA %-4d                          │\n", nova->id);
-    printf("  ├─────────────────────┬────────────────────────────────────────┤\n");
-    printf("  │        DESTINATARIO │ %-38s │\n", cliente_encontrado->nome);
-    printf("  └─────────────────────┼────────────────────────────────────────┘\n");
-    printf("  ┌─────────────────────┬────────────────────────────────────────┐\n");
-    printf("  │                  ID │ %03d            1×%.0f\n", nova->id, nova->valor);
-    printf("  │             PRODUTO │ %s\n", pe->nome);
-    printf("  └─────────────────────┴────────────────────────────────────────┘\n");
 
     // Validar entrega (se validar_entrega depender de id_cliente/id_produto/strings, tudo ok)
-    validar_entrega(nova);
+    char * mensagem;
+    validar_entrega(nova, mensagem);
+    imprimir_ficha_entrega(nova, pe);
 
     // Verifica fila válida antes de enfileirar
     Fila *f = bd()->entregas;
@@ -261,14 +275,14 @@ int inserir_entregas(int id_produto, int *id_cliente) {
     return nova->id;
 }
 
-void* buscar_entregas(const int id) {
+void buscar_entrega(const int id) {
   Entrega chave_entrega = {0};
   Entrega *entrega_encontrada = NULL;
   Produto chave_produto = {0};
   Produto *produto_encontrado = NULL;
 
   chave_entrega.id = id;
-  entrega_encontrada = pesquisarFila(bd()->entregas, &chave_entrega, localizar_entrega);
+  entrega_encontrada = buscarFila(bd()->entregas, &chave_entrega, localizar_entrega);
   if (entrega_encontrada) {
     int id_produto = entrega_encontrada->id_produto;
     chave_produto.id = id_produto;
@@ -280,7 +294,18 @@ void* buscar_entregas(const int id) {
       entrega_encontrada->destinatario);  // nome do destinatario
     }
   }
-  return entrega_encontrada;
+  imprimir_ficha_entrega(entrega_encontrada, produto_encontrado);
+}
+
+int buscar_entrega_id(const int id) {
+  Entrega chave = {0};
+  Entrega *encontrado = NULL;
+  chave.id = id;
+  encontrado = buscarFila(bd()->entregas, &chave, localizar_entrega);
+  if (encontrado) {
+    return encontrado->id;
+  }
+  return 0;
 }
 
 void imprimir_produto_entrega(Produto * p, float valor){
@@ -361,15 +386,167 @@ void listar_entregas() {
 }
 //==========================================
 
-int inserir_cargas() {
-return 0;
+static void imprimir_carga_relatorio(void *dado) {
+    iprimir_carga(dado, imprimir_entrega);
 }
 
-void * buscar_cargas(const int id) {
-
-}
 void listar_cargas() {
+    Arvore *raiz = bd()->cargas;
 
+    printf("\n");
+    printf("  ╔══════════════════════════════════════════════════════════════╗\n");
+    printf("  ║                     RELATÓRIO DE CARGAS                      ║\n");
+    printf(  "  ╠══════════════════════════════════════════════════════════════╣\n");
+
+    if (!raiz) {
+        printf("   ║                Nenhuma carga cadastrada.              ║\n");
+        printf("   ╚═══════════════════════════════════════════════════════╝\n");
+        return;
+    }
+
+    imprimir_cabecalha_carga();
+    imprimirArvore(raiz, imprimir_carga_relatorio);
+
+
+  printf("  ╠══════════════════════════════════════════════════════════════╣\n");
+  printf("  ║ TOTAL DE CARGAS: %4d                       TOTAL: %9.2f ║\n",
+         qtd_cargas(), 0);
+  printf("  ╚══════════════════════════════════════════════════════════════╝\n");
+  system("pause");
+}
+
+static void acumular_e_imprimir(void *dado, AcumuladorCarga *acc) {
+    Carga *c = dado;
+
+    iprimir_carga(c, imprimir_entrega);
+
+    acc->total_itens += 1;
+    acc->soma_valores += c->valor;
+}
+
+static void inorder_acumular(Arvore *raiz, AcumuladorCarga *acc) {
+    if (!raiz) return;
+    inorder_acumular(raiz->esq, acc);
+    acumular_e_imprimir(raiz->dado, acc);
+    inorder_acumular(raiz->dir, acc);
+}
+
+void buscar_carga(const int dia) {
+  buscarArvoreId(bd()->cargas, dia);
+  // imprimir_ficha_carga();
+}
+
+// encontrado = pesquisarDuplo(bd()->produtos, &chave, localizar_produto
+
+void incluir_entrega_na_carga(int id_entrega, int *id_carga) {
+
+    // ------------------------------------------------------------
+    // 1. Buscar entrega
+    // ------------------------------------------------------------
+    Entrega chave_entrega = {0};
+    chave_entrega.id = id_entrega;
+
+    Entrega *entrega = buscarFila(bd()->entregas, &chave_entrega, localizar_entrega);
+    if (!entrega) {
+        alerta("AVISO", "Entrega não encontrada!");
+        return;
+    }
+
+    // ------------------------------------------------------------
+    // 2. Tentar localizar carga existente (por ID, se informado)
+    // ------------------------------------------------------------
+    Carga chave_carga = {0};
+    chave_carga.id = *id_carga;
+
+    Carga *carga_encontrada = NULL;
+
+    if (*id_carga > 0) {
+        carga_encontrada = buscarArvore(bd()->cargas,
+                                        &chave_carga,
+                                        localizar_carga);
+    }
+
+    // ------------------------------------------------------------
+    // 3. Se carga não existe, pedir data e procurar carga por data
+    // ------------------------------------------------------------
+    char data_carga[16];
+    int serial_data = 0;
+
+    if (!carga_encontrada) {
+        do {
+            input_data_valid("   Insira a data da carga", data_carga);
+            serial_data = serial_de_data_str(data_carga);
+
+            if (serial_data <= 0)
+                alerta2("ERRO", "Data inválida", data_carga);
+
+        } while (serial_data <= 0);
+
+        chave_carga.id = serial_data;
+        carga_encontrada = buscarArvore(bd()->cargas,
+                                        &chave_carga,
+                                        localizar_carga);
+    }
+
+    // ------------------------------------------------------------
+    // 4A. Se carga existe → inserir a entrega nela
+    // ------------------------------------------------------------
+    if (carga_encontrada) {
+
+        *id_carga = carga_encontrada->id;
+
+        Fila *fila = (Fila*) carga_encontrada->entregas;
+
+        if (!fila) {
+            fila = criarFila();
+            enfileirar(fila, entrega);
+            carga_encontrada->entregas = fila;
+        } else {
+            enfileirar(fila, entrega);
+        }
+
+        return;
+    }
+
+    // ------------------------------------------------------------
+    // 4B. Se carga NÃO existe → criar carga nova
+    // ------------------------------------------------------------
+    Carga *nova = alocar_carga();
+    nova->id   = serial_data;
+    nova->data = serial_data;
+
+    // Inserir entrega na nova fila
+    Fila *nova_fila = criarFila();
+    enfileirar(nova_fila, entrega);
+    nova->entregas = nova_fila;
+
+    // Inserir na árvore → ATENÇÃO: precisa ATRIBUIR a nova raiz!
+    bd()->cargas = inserirArvore(bd()->cargas, nova->id, nova);
+
+    *id_carga = nova->id;
+}
+
+void imprimir_resumo(void * c) {
+  Carga *carga = c;
+  printf("  │  %02d │ %-10s     │       │", carga->id, carga->nome, carga->valor);
+}
+
+//imprime apenas os dados basicos
+void listar_resumo_cargas() {
+  //
+  // ┌─────┬─────────────────┬───────┐
+  // │ ID  │  DATA           │ SETOR │
+  // ┼─────┼─────────────────┼───────┼
+  // │ 01  │  21/03/2026     │ SUD   │
+  // │ 02  │  21/03/2026     │ SUD   │
+  // │ 03  │  21/03/2026     │ SUD   │
+  // └─────┼─────────────────┼───────┘
+  //
+  printf("  ┌─────┬─────────────────┬───────┐\n");
+  printf("  │ ID  │  DATA           │ SETOR │\n");
+  printf("  ┼─────┼─────────────────┼───────┼\n");
+  imprimirArvore(bd()->cargas, imprimir_resumo);
+  printf("  └─────┼─────────────────┼───────┘\n");
 }
 
 int inserir_vendas(const int id) {
@@ -384,4 +561,35 @@ void listar_vendas() {
 }
 
 void relatorios(){
+}
+
+//cadastra dados de exemplo
+void migrations() {
+  // inserirListaDupla( bd() -> clientes, novo_cliente("LAMPARINA VITRIFICADA", 99.99));
+
+  // inserirListaDupla( bd() -> produtos, novo_produto("LAMPARINA VITRIFICADA", 99.99));
+  // inserirListaDupla( bd() -> produtos, novo_produto("GOMA DE MASCAR", 9.99));
+  // inserirListaDupla( bd() -> produtos, novo_produto("ESTILINGUE", 29.99));
+  // inserirListaDupla( bd() -> produtos, novo_produto("CERA DE ABELHA", 99.99));
+  // inserirListaDupla( bd() -> produtos, novo_produto("ARMADURA DE LENHADOR", 99.99));
+  // inserirListaDupla( bd() -> produtos, novo_produto("BOTINA DE COURO", 99.99));
+  // inserirListaDupla( bd() -> produtos, novo_produto("BOTAS DE BORRACHA", 99.99));
+  // inserirListaDupla( bd()->produtos, novo_produto("AMPOLA DE GENIO ENGARRAFADO", 199.99));
+  // inserirListaDupla( bd()->produtos, novo_produto("BOBINA DE INDUÇÃO GALVANIZADA", 349.90));
+  // inserirListaDupla( bd()->produtos, novo_produto("ELETRODO DE COBRE VITORIANO", 89.50));
+  // inserirListaDupla( bd()->produtos, novo_produto("LÂMPADA DE PLASMA EXPERIMENTAL", 159.99));
+  // inserirListaDupla( bd()->produtos, novo_produto("TÚBOS DE VIDRO CRIOGÊNICO", 79.99));
+  // inserirListaDupla( bd()->produtos, novo_produto("VELA DE LABORATÓRIO ", 19.99));
+  // inserirListaDupla( bd()->produtos, novo_produto("COMPILADOR DE CELULA ARTIFICIAL", 899.99));
+  // inserirListaDupla( bd()->produtos, novo_produto("TECIDOS BIO-ELETRIFICADOS", 349.99));
+  // inserirListaDupla( bd()->produtos, novo_produto("PONTE DE GRAFITE ", 229.90));
+  // inserirListaDupla( bd()->produtos, novo_produto("FRASCO VAPORIZADOR ", 189.99));
+  // inserirListaDupla( bd()->produtos, novo_produto("CATALISADOR ALFA 88", 999.99));
+
+  //inserirArvore( bd()->cargas, 25, nova_carga("CLIENTE 1", 999.99));
+
+}
+
+void vender() {
+  vender_agora();
 }

@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "config.h"
 #include "../include/arvore.h"
+
 
 Arvore *criarArvore(int id, void *dado) {
     Arvore *n = malloc(sizeof(Arvore));
@@ -23,21 +25,33 @@ Arvore *inserirArvore(Arvore *raiz, int id, void *dado) {
     return raiz;
 }
 
-void *buscarArvore(Arvore *raiz, int id) {
+void *buscarArvoreId(Arvore *raiz, int id) {
     if (!raiz) return NULL;
     if (id == raiz->id) return raiz->dado;
-    if (id < raiz->id) return buscarArvore(raiz->esq, id);
-    else return buscarArvore(raiz->dir, id);
+    if (id < raiz->id) return buscarArvoreId(raiz->esq, id);
+
+    return buscarArvoreId(raiz->dir, id);
 }
 
-// Último no mais à esquerda
+void *buscarArvore(Arvore *raiz, void *alfa, int (*cmp)(void*, void*)) {
+    if (!raiz) return NULL;
+    int parcial = cmp(raiz->dado, raiz->dado);
+    if (parcial == FOUND) return raiz->dado;
+
+    return parcial < FOUND
+        ? buscarArvore(raiz->esq, alfa, cmp)
+        : buscarArvore(raiz->dir, alfa, cmp)
+    ;
+}
+
+// Ultimo nó mais a esquerda
 Arvore *leftArvore(Arvore *raiz) {
     if (!raiz) return NULL;
     while (raiz->esq != NULL ) raiz = raiz->esq;
     return raiz;
 }
 
-// Último no mais à direita
+// Ultimo nó mais a direita
 Arvore *rightArvore(Arvore *raiz) {
     if (!raiz) return NULL;
     while (raiz->dir) raiz = raiz->dir;
@@ -63,38 +77,41 @@ Arvore *removerArvore(Arvore *raiz, int id) {
     else if (id > raiz->id)
         raiz->dir = removerArvore(raiz->dir, id);
     else {
-        // No encontrado
+        // Nao encontrado
         if (!raiz->esq) {
             Arvore *temp = raiz->dir;
             free(raiz);
             return temp;
-        } else if (!raiz->dir) {
+        };
+
+        if (!raiz->dir) {
             Arvore *temp = raiz->esq;
             free(raiz);
             return temp;
-        } else {
-            // Dois filhos: substituir pelo minimo da direita
-            Arvore *min = NULL;
-            raiz->dir = removerMin(raiz->dir, &min);
-            min->esq = raiz->esq;
-            min->dir = raiz->dir;
-            free(raiz);
-            return min;
-        }
+        };
+
+        // Dois filhos: substituir pelo menor da direita
+        Arvore *min = NULL;
+        raiz->dir = removerMin(raiz->dir, &min);
+        min->esq = raiz->esq;
+        min->dir = raiz->dir;
+        free(raiz);
+        return min;
+
     }
     return raiz;
 }
 
-// Impressao em ordem (in-order)
+// Impressao em ordem
 void imprimirArvore(Arvore *raiz, void (*imprimir)(void *)) {
     if (!raiz) return;
     imprimirArvore(raiz->esq, imprimir);
-    printf("ID:%d -> ", raiz->id);
+    // printf("ID:%d -> ", raiz->id);
     imprimir(raiz->dado);
     imprimirArvore(raiz->dir, imprimir);
 }
 
-// Impressao pre_ordem (in-order)
+// Serializacao
 void pre_ordem(Arvore *raiz, void (*imprimir)(void *)) {
     if (!raiz) return;
     printf("ID:%d -> ", raiz->id);
@@ -102,7 +119,7 @@ void pre_ordem(Arvore *raiz, void (*imprimir)(void *)) {
     pre_ordem(raiz->esq, imprimir);
     pre_ordem(raiz->dir, imprimir);
 }
-// Impressao pos_ordem (in-order)
+
 void pos_ordem(Arvore *raiz, void (*imprimir)(void *)) {
     if (!raiz) return;
     pos_ordem(raiz->esq, imprimir);
@@ -110,7 +127,7 @@ void pos_ordem(Arvore *raiz, void (*imprimir)(void *)) {
     printf("ID:%d -> ", raiz->id);
     imprimir(raiz->dado);
 }
-// Busca avancada com funcao de comparacao
+
 void *busca_avancada(Arvore *raiz, void *alfa, int (*cmp)(void*, void*)) {
     if (!raiz) return NULL;
 

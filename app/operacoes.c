@@ -4,6 +4,8 @@
 
 #include "../include/cadastros.h"
 #include "../include/visual.h"
+#include "../include/calendario.h"
+#include "../include/data.h"
 #include "../modules/ajuda.c"
 
 void boas_vindas_simplificado(const char *title) {
@@ -58,15 +60,34 @@ void executar_cadastro_entregas() {
     int id_produto, id_cliente = 0 , continuar;
 
     do {
-        printf("Selecione o produto\n");
-        input_inteiro("ID", &id_produto);
-        id_produto = buscar_produto_id(id_produto); //0 se nao encontrado
-        if (id_produto == 0) {
-            alerta("AVISO", "PRODUTO NÃO ENCONTRADO");
-            system("PAUSE");
-            return;
-        }
+
+        printf("\n  ┌────────────────────────────────────────┐\n");
+        printf(  "  │   ESCOLHA UM PRODUTO                   │\n");
+        printf(  "  └────────────────────────────────────────┘\n");
+        //═════════════════════════════════
+        //         LOOP DE BUSCA
+        //digite 0 para listar, digite o codigo do produto, repete ate encontrar ou -1 para cancelar
+        do {
+            input_inteiro("  Digite o codigo do produto.    (0) ajuda\n   CODIGO DO PRODUTO", &id_produto);
+            if (id_produto<0)
+                return;
+            if (id_produto==0) {
+                listar_produtos();
+            } else {
+                id_produto = buscar_produto_id(id_produto); //0 se nao encontrado
+                if (id_produto == 0) {
+                    alerta("AVISO", "PRODUTO NÃO ENCONTRADO");
+                    system("PAUSE");
+                }
+            }
+        }   while (id_produto == 0);
+        //      FIM DO LOOP DE BUSCA
+        //═════════════════════════════════
+        printf(" \n"); //bug
+                    system("PAUSE"); //evita bug
+
         int id_entrega = inserir_entregas(id_produto, &id_cliente);
+                    system("PAUSE");
 
         continuar = input_logico("Inserir mais um?");
     } while (continuar);
@@ -74,9 +95,13 @@ void executar_cadastro_entregas() {
 
 void executar_busca_entregas() {
     int id;
+
+    printf("\n  ┌────────────────────────────────────────┐\n");
+    printf(  "  │   SELECIONE UMA ENTREGA                │\n");
+    printf(  "  └────────────────────────────────────────┘\n");
     printf("Informe o id da entrega para buscar\n");
-    input_inteiro("ID", &id);
-    buscar_entregas(id);
+    input_inteiro("CODIGO DA ENTREGA", &id);
+    buscar_entrega(id);
     system("PAUSE");
 }
 
@@ -90,4 +115,105 @@ void executar_ajuda_sistema_entregas() {
     system("cls");
     boas_vindas_simplificado("AJUDA DO SISTEMA DE ENTREGAS");
     ajuda_sistema_entregas();
+}
+
+/*   Montar cargas
+     --------
+     - Inspeciona a fila de entregas
+     - o usuario digita o id da entrega
+     - se a entrega existir, ele remove da fila e adiciona na carga
+ */
+
+void executar_cadastro_cargas() {
+        int continuar;
+        int id_carga;
+        if (qtd_cargas() > 0)
+            if (input_logico("Deseja atualizar uma carga existente?"))
+                listar_resumo_cargas();
+
+    printf("\n  ┌────────────────────────────────────────┐\n");
+    printf(  "  │   ESCOLHA UMA CARGA                    │\n");
+    printf(  "  └────────────────────────────────────────┘\n");
+    //═════════════════════════════════
+    //         LOOP DE BUSCA
+    input_inteiro("  Digite o codigo da carga.    (0) incluir\n   CODIGO DE RASTREIO", &id_carga);
+    printf("\n  ┌────────────────────────────────────────┐\n");
+    if (id_carga==0) {
+        printf(  "  │   INCLUINDO UMA NOVA CARGA             │\n");
+        printf(  "  ┌────────────────────────────────────────┐\n");
+    }
+    do {
+        int id_entrega;
+        printf("\n  ┌────────────────────────────────────────┐\n");
+        printf(  "  │   ESCOLHA UMA ENTREGA                  │\n");
+        printf(  "  └────────────────────────────────────────┘\n");
+        //═════════════════════════════════
+        //         LOOP DE BUSCA
+        //digite 0 para listar, digite o codigo da entrega, repete ate encontrar ou -1 para cancelar
+        do {
+            input_inteiro("  Digite o codigo da entrega.    (0) ajuda\n   CODIGO DA ENTREGA", &id_entrega);
+            if (id_entrega<0)
+                return;
+            if (id_entrega==0) {
+                listar_entregas();
+            } else {
+                id_entrega = buscar_entrega_id(id_entrega); //0 se nao encontrado
+                if (id_entrega == 0) {
+                    alerta("AVISO", "ENTREGA NÃO ENCONTRADA");
+                    system("PAUSE");
+                }
+            }
+        }   while (id_entrega == 0);
+        //      FIM DO LOOP DE BUSCA
+        //═════════════════════════════════
+        //selecionou
+        incluir_entrega_na_carga(id_entrega, &id_carga);
+        printf("\n  ┌───────────┬──────────────────────┐\n");
+        printf(  "  │   TICKET  │ %4d                │\n", id_carga);
+        printf(  "  └───────────└──────────────────────┘\n");
+        printf(  "  Código de rastreio\n\n\n");
+
+        continuar = input_logico("Inserir mais um?");
+    } while (continuar);
+}
+
+void executar_busca_cargas() {
+    int id;
+
+    printf("\n  ┌────────────────────────────────────────┐\n");
+    printf("  │   LOCALIZE UMA CARGA                   │\n");
+    printf("  └────────────────────────────────────────┘\n");
+    printf("Informe o ticket da carga para buscar\n");
+    input_inteiro("Codigo de Rastreio", &id);
+    buscar_carga(id);
+    system("PAUSE");
+}
+void executar_busca_cargas_por_data() {
+    int serial_data;
+    char * data_carga[SIZEDATE];
+    data_carga[0] = "\0";
+    do {
+        input_data_valid(("   Insira a data da carga"), data_carga);
+        serial_data = serial_de_data_str(data_carga);
+
+        if (serial_data <= 0) {
+            alerta2("ERRO ", "Data inválida", data_carga);
+        }
+    } while (serial_data <= 0);
+    buscar_carga(serial_data);
+    system("PAUSE");
+}
+
+void executar_listar_cargas() {
+    system("cls");
+    boas_vindas_simplificado("ROMANEIO");
+    listar_cargas();
+}
+
+void formulario_vendas() {
+    vender();
+}
+
+void simular_dados() {
+    migrations();
 }

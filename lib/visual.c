@@ -46,6 +46,59 @@ void cursorxy(int x, int y) {
     printf("\x1b[%d;%dH", y, x);
 }
 
+void cursor_up(int n) {
+    printf("\x1b[%dA", n);
+}
+
+void cursor_down(int n) {
+    printf("\x1b[%dB", n);
+}
+
+void cursor_left(int n) {
+    printf("\x1b[%dD", n);
+}
+
+void cursor_right(int n) {
+    printf("\x1b[%dC", n);
+}
+
+// -----------------------------
+// Linha atual
+// -----------------------------
+void cursor_home_line(void) {
+    // Voltar para o início da linha atual
+    printf("\r");
+    // Alternativa ANSI:
+    // printf("\x1b[0G");
+}
+
+void cursor_next_line(int n) {
+    printf("\x1b[%dE", n);
+}
+
+void cursor_prev_line(int n) {
+    printf("\x1b[%dF", n);
+}
+
+// -----------------------------
+// Limpezas
+// -----------------------------
+void clear_screen(void) {
+    printf("\x1b[2J\x1b[1;1H");
+}
+
+void clear_line(void) {
+    printf("\x1b[2K");
+}
+
+void clear_line_to_end(void) {
+    printf("\x1b[K");
+}
+
+void clear_line_to_start(void) {
+    printf("\x1b[1K");
+}
+
 int exibir_menu(const char *operacoes) {
     //imprimir_nome_sistema();
     printf("\n\n%s\n", operacoes);
@@ -101,7 +154,7 @@ void render_mascara_data(const char *title, char *digits, int pos) {
     if (pos >= 4) visual_pos++;
 
     int base_x = (int)strlen(title) + 3;
-    cursorxy(base_x + visual_pos, 1);
+    cursor_home_line();
 }
 
 void input_data_mascarada_validada(const char *title, char *out) {
@@ -110,7 +163,7 @@ void input_data_mascarada_validada(const char *title, char *out) {
 
     printf("%s: ../../....", title);
     int base_x = (int)strlen(title) + 3;
-    cursorxy(base_x, 1);
+    cursor_home_line();
 
     while (1) {
         int c = getch();
@@ -122,7 +175,7 @@ void input_data_mascarada_validada(const char *title, char *out) {
             pos = 0;
             digits[0] = 0;
             printf("%s: ../../....", title);
-            cursorxy(base_x, 1);
+    cursor_home_line();
             continue;
         }
 
@@ -150,13 +203,17 @@ void input_data_mascarada_validada(const char *title, char *out) {
     printf("\n");
     input_flush();
 }
-void input_data_valid(const char *title, char *out) {
+void input_data_valid(const char *title, char *out[SIZEDATE]) {
+    Data _hoje = hoje();
+    system("cls");
+    imprimir_calendario(_hoje.mes, _hoje.ano);
+
     char digits[9] = {0};
     int pos = 0;
 
     printf("%s: ../../....", title);
     int base_x = (int)strlen(title) + 3;
-    cursorxy(base_x, 1);
+    cursor_home_line();
 
     while (1) {
         int c = getch();
@@ -168,7 +225,7 @@ void input_data_valid(const char *title, char *out) {
             pos = 0;
             digits[0] = 0;
             printf("%s: ../../....", title);
-            cursorxy(base_x, 1);
+    cursor_home_line();
             continue;
         }
 
@@ -318,11 +375,9 @@ void imprimir_calendario(int mes, int ano) {
     #define BL "╚"
     #define BR "╝"
 
-        // Linhas
     #define HZ "═"
     #define VT "║"
 
-        // Cruzamentos
     #define TS "╦"
     #define BS "╩"
     #define LS "╠"

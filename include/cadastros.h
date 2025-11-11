@@ -2,7 +2,6 @@
 #define MODULE_CADASTROS3
 
 #include <stdint.h>
-
 #include "../app/config.h"
 
 //indicadores
@@ -30,9 +29,9 @@ int qtd_vendas(void);
 
 /*
     recomendações
-        Nao implementar arquivos .h para produtos.c, entregas.c etc
-        Nao visualizar bc dentro de produto.c
-        Nao importar structs dentro de outra estruct por exemplo produto->entrega xx proibido
+        Nao implementar arquivos .h para entidades produtos.c, entregas.c etc
+        Nao visualizar bd dentro de entidaeds produto.c, entregas.c etc
+        Nao importar structs dentro de outra estruct por exemplo produto.c->entrega.c xx proibido
         em vez disso use injecao de dependencias via cadastro.c
         aceitavel:
             produto * Produto = (Produto *) Buscar(bd()->produtos, buscar1produto)
@@ -40,26 +39,44 @@ int qtd_vendas(void);
  */
 
 int inserir_produto();
-void * buscar_produto(int id);
+void buscar_produto(int id);
 int buscar_produto_id(int id);
 void listar_produtos();
 
 int inserir_entregas(int id_produto, int * id_cliente);
-void * buscar_entregas(const int id);
+void buscar_entrega(int id);
+int buscar_entrega_id(int id);
 
 //funcao especial para agrupar entrega por destinatario;
 void iprimir_entrega_ag(void *dado,  char * destinatario[SIZES], float * agregado);
 
 void listar_entregas();
 
-int inserir_cargas();
-void * buscar_cargas(const int id);
+int inserir_carga();
+void buscar_carga(const int dia);
+void listar_resumo_cargas();
 void listar_cargas();
 
-int inserir_vendas(const int id);
-void * buscar_vendas();
+int inserir_venda(const int id);
+void buscar_venda();
 void listar_vendas();
 
 void relatorios();
+void incluir_entrega_na_carga(int id_entrega, int * id_carga);
+
+typedef struct Motorista {
+    int id; //carteira de motorista
+    char nome[SIZES];
+} Motorista;
+
+typedef struct Veiculo {
+    int id; //carteira de motorista
+    char placa[SIZES];
+    char nome[SIZES];
+} Veiculo;
+
+//funcao para simular dados
+void migrations();
+void vender();
 
 #endif

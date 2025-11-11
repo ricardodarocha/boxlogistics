@@ -1,11 +1,12 @@
 #include "../app/config.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 typedef struct {
     int id;
     char nome[INPUTSIZE];
-    char data[INPUTSIZE];
+    // char data[INPUTSIZE]; //todo! data de vencimento do produto
     float valor;
 } Produto;
 
@@ -50,4 +51,11 @@ Produto *alocar_produto(void) {
     produto->valor = 0.0f;
 
     return produto;
+}
+
+Produto *novo_produto(char *nome, float valor) {
+    Produto *result = alocar_produto();
+    strcpy(result->nome, nome);
+    result->valor = valor;
+    return result;
 }

@@ -9,7 +9,7 @@ void boas_vindas() {
     printf("\x1b[2J\x1b[H");
     printf("\n");
     printf("  ╔══════════════════════════════════════════════════════════════╗\n");
-    printf("  ║                                                        5v81  ║\n");
+    printf("  ║                                                        5v83  ║\n");
     printf("  ║                   ██████╗  ██████╗ ██╗   ██╗                 ║\n");
     printf("  ║                   ██╔══██╗██╔═══██╗ ██║ ██╔╝                 ║\n");
     printf("  ║                   ██████╔╝██║   ██║  ████╔╝                  ║\n");
@@ -33,9 +33,9 @@ void boas_vindas() {
     5. volta no main
 */
 
-
 void rodar_app() {
     conectar(/*ARQUIVO*/);
+    simular_dados();
     int acesso = efetuar_login(_login);
 
     if (!acesso) {

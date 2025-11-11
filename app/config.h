@@ -14,6 +14,9 @@
 #define FOUND 0
 #define NOTFOUND 1
 
+#define ESQUERDA -1
+#define DIREITA 1
+
 // const char *NOMESISTEMA = "BOX LOGISTICS";
 // const char *ARQUIVO = "bd.box";
 

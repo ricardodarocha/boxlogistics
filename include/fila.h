@@ -15,11 +15,12 @@ typedef struct {
 Fila *criarFila();
 void enfileirar(Fila *f, void *dado);
 void *desenfileirar(Fila *f);
+void *remover(Fila *f, void *alfa, int (*cmp)(void*, void*));
 void *peek_fila(Fila *f);
 int filaVazia(Fila *f);
 void imprimirFila(Fila *f, void (*imprimir)(void *));
 void imprimirFilaAg(Fila *f, void (*imprimir_agregado)(void *, char *[SIZES], float * agregado), char * ag[SIZES], float * agregado);
-void *pesquisarFila(Fila *fila, void *alfa, int (*cmp)(void*, void*));
+void *buscarFila(Fila *fila, void *alfa, int (*cmp)(void*, void*));
 void limparFila(Fila *f);
 
 #endif

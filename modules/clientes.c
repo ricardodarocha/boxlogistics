@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "../app/config.h"
+#include <string.h>
 
 typedef struct {
     int id;
@@ -54,4 +55,11 @@ Cliente *alocar_cliente(void) {
     cliente->cpf = cliente->id+18; //um valor aleatorio
 
     return cliente;
+}
+
+Cliente *novo_cliente(char *nome, int cpf) {
+    Cliente *result = alocar_cliente();
+    strcpy(result->nome, nome);
+    result->cpf = cpf;
+    return result;
 }
