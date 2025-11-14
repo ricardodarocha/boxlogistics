@@ -4,21 +4,13 @@
 #include "../include/fila.h"
 #include "../include/calendario.h"
 
-#include <stdio.h>
-#include <stdlib.h>
+// #include <stdio.h>
+// #include <stdlib.h>
 #include <string.h>
 
-#include "../app/config.h"
+// #include "../app/config.h"
+#include "../include/carga.h"
 
-#define CARGA_NAO_ENCONTRADA 0
-
-typedef struct Carga {
-    int id;
-    int data; //o numero serial que representa a data, igual excel
-    void *entregas; //um ponteiro para a cabeça de uma lista de entregas
-    char nome[SIZES];
-    float valor;
-} Carga;
 
 static int proxima_carga = 0;
 
@@ -30,12 +22,12 @@ void imprimir_cabecalha_carga() {
 
 }
 
-void iprimir_carga(void *dado, void (*imprimir_entrega)(void *)) {
+void imprimir_carga(void *dado, void (*imprimir_entrega)(void *)) {
     Carga *c = dado;
     printf("  ╠──────────────────────────────────────────────────────────────╣\n");
     printf("  │ CARGA %03d                                                  │\n", c->id);
     printf("  ├──────────────────────────────────────────────────────────────┤\n");
-    printf("  │ Data................: %-38s │\n", formatar_data(c->id));
+    printf("  │ Data................: %-38s │\n", formatar_data(c->data));
     printf("  │ Valor total.........: %10.2f                             │\n", c->valor);
     // printf("│ Motorista...........: %-54s │\n", c->motorista_nome);
     // printf("│ CNH.................: %-54s │\n", c->motorista_cnh);
@@ -94,7 +86,7 @@ Carga *alocar_carga(void) {
         perror("malloc");
         return NULL;
     }
-
+    memset(carga, 0, sizeof(Carga));
     carga->id = ++proxima_carga;
     carga->data = 0;
 
@@ -104,13 +96,14 @@ Carga *alocar_carga(void) {
     return carga;
 }
 
-void inserir_nova_carga(void *entrega, int *id_carga) {
+void * inserir_nova_carga(void *entrega, int *id_carga) {
     Carga * carga = alocar_carga();
     * id_carga = carga->id;
     carga->entregas = entrega;
+    return carga;
 }
 
-Carga *nova_carga(char *nome, float valor) {
+Carga *nova_carga(const char *nome, const float valor) {
     Carga *result = alocar_carga();
     strcpy(result->nome, nome);
     result->valor = valor;

@@ -39,9 +39,10 @@ int qtd_vendas(void);
  */
 
 int inserir_produto();
-void buscar_produto(int id);
+void * buscar_produto(int id);
 int buscar_produto_id(int id);
 void listar_produtos();
+void imprimir_produto_id(int id);
 
 int inserir_entregas(int id_produto, int * id_cliente);
 void buscar_entrega(int id);
@@ -61,7 +62,6 @@ int inserir_venda(const int id);
 void buscar_venda();
 void listar_vendas();
 
-void relatorios();
 void incluir_entrega_na_carga(int id_entrega, int * id_carga);
 
 typedef struct Motorista {

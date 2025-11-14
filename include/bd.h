@@ -13,6 +13,7 @@ typedef struct {
     Arvore *cargas;
     Pilha *pedidos; //últimos pedidos inseridos
     ListaDupla *vendas;
+    Pilha *historico;
 } BancoDados;
 BancoDados* bd();
 BancoDados* cursor();

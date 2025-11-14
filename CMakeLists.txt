@@ -36,6 +36,8 @@ set(GENERICS_SOURCES
 # Fontes da pasta modules/
 set(MODULES_SOURCES
         modules/cadastros.c
+        modules/cargas.c
+        modules/entregas.c
 )
 
 # Executável final

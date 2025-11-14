@@ -34,7 +34,12 @@ void executar_busca_produtos() {
     int id;
     printf("Informe o id do produto para buscar\n");
     input_inteiro("ID", &id);
-    buscar_produto(id);
+    id = buscar_produto_id(id);
+    if (id==0) {
+        alerta("ERRO", "PRODUTO NÃO ENCONTRADO");
+    } else {
+        imprimir_produto_id(id);
+    }
     system("PAUSE");
 }
 
@@ -42,6 +47,12 @@ void executar_listar_produtos() {
     system("cls");
     boas_vindas_simplificado("RELATORIO DE PRODUTOS");
     listar_produtos();
+}
+
+void executar_listar_clientes() {
+    system("cls");
+    boas_vindas_simplificado("RELATORIO DE CLIENTES");
+    listar_clientes();
 }
 
 /*   Cadastro de entregas
@@ -84,11 +95,10 @@ void executar_cadastro_entregas() {
         //      FIM DO LOOP DE BUSCA
         //═════════════════════════════════
         printf(" \n"); //bug
-                    system("PAUSE"); //evita bug
+                    // system("PAUSE"); //evita bug
 
         int id_entrega = inserir_entregas(id_produto, &id_cliente);
-                    system("PAUSE");
-
+        printf("Entrega inserida [%d]\n", id_entrega);
         continuar = input_logico("Inserir mais um?");
     } while (continuar);
 }
@@ -126,7 +136,7 @@ void executar_ajuda_sistema_entregas() {
 
 void executar_cadastro_cargas() {
         int continuar;
-        int id_carga;
+        int id_carga = 0;
         if (qtd_cargas() > 0)
             if (input_logico("Deseja atualizar uma carga existente?"))
                 listar_resumo_cargas();
@@ -190,8 +200,7 @@ void executar_busca_cargas() {
 }
 void executar_busca_cargas_por_data() {
     int serial_data;
-    char * data_carga[SIZEDATE];
-    data_carga[0] = "\0";
+    char data_carga[SIZEDATE];
     do {
         input_data_valid(("   Insira a data da carga"), data_carga);
         serial_data = serial_de_data_str(data_carga);
@@ -208,6 +217,12 @@ void executar_listar_cargas() {
     system("cls");
     boas_vindas_simplificado("ROMANEIO");
     listar_cargas();
+}
+
+void executar_listar_historico() {
+    system("cls");
+    boas_vindas_simplificado("ULTIMAS ENTREGAS CARREGADAS");
+    listar_historico();
 }
 
 void formulario_vendas() {

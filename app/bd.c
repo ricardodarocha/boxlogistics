@@ -3,10 +3,9 @@
 #include "../include/arvore.h"
 #include "../include/bd.h"
 #include "../include/fila.h"
-#include "../include/lista_dupla.h"
 #include "../include/pilha.h"
+#include "../include/lista_dupla.h"
 
-//Aponta sempre pra cabeça da lista
 BancoDados* bd() {
     static BancoDados memoria;
     static int initialized = 0;
@@ -16,10 +15,11 @@ BancoDados* bd() {
         memoria.clientes = NULL;
         memoria.entregas = criarFila();
         memoria.cargas   = NULL;
-        memoria.pedidos  = NULL;
         memoria.vendas   = NULL;
+        memoria.historico = criarPilha();
         initialized = 1;
     }
+
 
     return &memoria;
 }

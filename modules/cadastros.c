@@ -6,9 +6,10 @@
 #include "../include/visual.h"
 #include "../modules/produtos.c"
 #include "../modules/clientes.c"
-#include "../modules/entregas.c"
-#include "../modules/cargas.c"
+#include "../include/entrega.h"
+#include "../include/carga.h"
 #include "../modules/vendas.c"
+#include "../include/historico.h"
 
 typedef struct {
   int total_itens;
@@ -52,6 +53,12 @@ int inserir_produto(){
 }
 
 void imprimir_ficha_produto(Produto * pro) {
+  if (pro == NULL) {
+    printf("  ┌──────────────────────────────────────────────────────────────┐\n");
+    printf("  │                     PRODUTO INDISPONIVEL                     │\n");
+    printf("  └──────────────────────────────────────────────────────────────┘\n");
+    return;
+  }
   printf("  ┌──────────────────────────────────────────────────────────────┐\n");
   printf("  │               PRODUTO DISPONIVEL %-4d                        │\n", pro->id);
   printf("  ├─────────────────────┬────────────────────────────────────────┤\n");
@@ -60,20 +67,16 @@ void imprimir_ficha_produto(Produto * pro) {
   printf("  └─────────────────────┴────────────────────────────────────────┘\n");
 }
 
-void buscar_produto(const int id) {
+void * buscar_produto(const int id) {
     Produto chave = {0};
-    Produto *encontrado = NULL;
     chave.id = id;
-    encontrado = pesquisarDuplo(bd()->produtos, &chave, localizar_produto);
-    if (encontrado)
-      imprimir_ficha_produto(encontrado);
+    Produto *encontrado = pesquisarDuplo(bd()->produtos, &chave, localizar_produto);
+    return encontrado;
 }
 
+// Retorna 0 se nao encontrado
 int buscar_produto_id(const int id) {
-    Produto chave = {0};
-    Produto *encontrado = NULL;
-    chave.id = id;
-    encontrado = pesquisarDuplo(bd()->produtos, &chave, localizar_produto);
+    Produto * encontrado = buscar_produto(id);
     if (encontrado) {
       return encontrado->id;
     }
@@ -84,6 +87,20 @@ void listar_produtos() {
   imprimir_cabecalho_produto();
   imprimirDuplo(bd()->produtos, iprimir_produto);
   system("pause");
+}
+void listar_clientes() {
+  imprimir_cabecalho_cliente();
+  imprimirDuplo(bd()->clientes, iprimir_cliente);
+  system("pause");
+}
+
+void imprimir_ficha_produto_id(int id) {
+  Produto* pro = buscar_produto(id);
+  imprimir_ficha_produto(pro);
+}
+
+void imprimir_produto_id(int id) {
+  imprimir_ficha_produto_id(id);
 }
 
 //==========================================
@@ -103,19 +120,18 @@ int inserir_cliente(){
     //==================== o cliente ja existe  ====================
     printf("\n║       (1) CLIENTE ENCONTRADO    \n");
     printf(  "║                 ID: %03d\n", ja_existe->id);
-    printf(  "║    NOME DO CLIENTE: %s", ja_existe->nome);
+    printf(  "║    NOME DO CLIENTE: %s\n", ja_existe->nome);
 
     return ja_existe->id;
   };
 
   Cliente * novo_cliente = alocar_cliente();
   //==================== ler os campos do cliente ====================
-  printf(      "               ID: %03d\n", novo_cliente->id);
-  input_string(" NOME DO CLIENTE", novo_cliente->nome, sizeof(novo_cliente->nome));
+  input_string("NOME DO CLIENTE", novo_cliente->nome, sizeof(novo_cliente->nome));
   // printf("                   CPF: %d", cpf);
   novo_cliente->cpf = cpf;
 
-  validar_cliente(novo_cliente);
+  // validar_cliente(novo_cliente);
   inserirListaDupla(&bd()->clientes, novo_cliente);
   return novo_cliente->id;
 }
@@ -130,11 +146,6 @@ void * buscar_cliente(const int id) {
     return NULL;
 }
 
-void listar_clientes() {
-  imprimir_cabecalho_cliente();
-  imprimirDuplo(bd()->clientes, iprimir_cliente);
-  system("pause");
-}
 //====================
 int imprimir_ficha_entrega(Entrega * entrega, Produto * produto) {
   printf("  ┌──────────────────────────────────────────────────────────────┐\n");
@@ -148,130 +159,100 @@ int imprimir_ficha_entrega(Entrega * entrega, Produto * produto) {
   printf("  └─────────────────────┴────────────────────────────────────────┘\n");
 }
 
-int inserir_entregas(int id_produto, int *id_cliente) {
-    // --- Pré-condição: id_produto já deve ser válido (executar_cadastro_entregas o garantiu) ---
-    // Se quiser dupla verificação, use uma função que apenas teste existência sem remapear.
-   //
-   if (id_produto == 0) {
-        alerta("AVISO", "PRODUTO NAO ENCONTRADO\n");
-        system("pause");
-        return 0;
-   }
-
-  // Buscar e validar o produto (aqui assumimos id_produto já ok, mas conferimos na BD)
-  Produto chave_produto = {0};
-  chave_produto.id = id_produto;
-  Produto *pe =
-      pesquisarDuplo(bd()->produtos, &chave_produto, localizar_produto);
-  if (pe==NULL) {
-    char mensagem[128];
-    snprintf(
-        mensagem,
-        sizeof(mensagem),
-        "PRODUTO NAO ENCONTRADO (id=%d)\n",
-        *id_cliente
-    );
-
-    alerta("AVISO", mensagem);
-    system("pause");
-    return 0;
-  } else {
-    imprimir_ficha_produto(pe);
-  }
-
-  // Se id_cliente não definido, criar e guardar no ponteiro
-  //▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-  //         EXIBE ALERTA
-  //▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-  if (id_cliente == NULL) {
-    alerta("ERRO", "PRODUTO NAO ENCONTRADO\n");
-    system("pause");
+int inserir_entregas(int id_produto, int *id_cliente_ptr) {
+    if (id_cliente_ptr == NULL) {
+        alerta("ERRO", "Ponteiro id_cliente invalido\n");
         return 0;
     }
 
-    int imprimir_ficha_cliente = 0; //nao
-    if (*id_cliente == 0) {
+    if (id_produto == 0) {
+        alerta("AVISO", "PRODUTO NAO ENCONTRADO\n");
+        return 0;
+    }
+
+    /* Buscar produto */
+    Produto chave_produto = {0};
+    chave_produto.id = id_produto;
+    Produto *pe = pesquisarDuplo(bd()->produtos, &chave_produto, localizar_produto);
+    if (!pe) {
+        char msg[128];
+        snprintf(msg, sizeof(msg), "PRODUTO NAO ENCONTRADO (id=%d)\n", id_produto);
+        alerta("AVISO", msg);
+        return 0;
+    }
+    imprimir_ficha_produto(pe);
+
+    /* Se id_cliente não definido, inserir cliente */
+    if (*id_cliente_ptr == 0) {
         printf("\n  ┌──────────────────────────────────┐\n");
         printf("  │   INFORME OS DADOS DO CLIENTE    │\n");
-        printf("  └──────────────────────────────────┘\n");
-        printf(" \n");
-        *id_cliente = inserir_cliente();
-        imprimir_ficha_cliente = (*id_cliente > 0);
+        printf("  └──────────────────────────────────┘\n\n");
+
+        int novo_id = inserir_cliente();
+        if (novo_id == 0) {
+            alerta("ERRO", "ERRO AO INSERIR O CLIENTE\n");
+            return 0;
+        }
+        *id_cliente_ptr = novo_id;
     }
 
-  if (*id_cliente == 0) {
-    //▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-    //          EXIBE ALERTA
-    //▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-    alerta("ERRO", "ERRO AO INSERIR O CLIENTE\n");
-    system("pause");
+    if (*id_cliente_ptr == 0) {
+        alerta("ERRO", "ERRO AO OBTER ID DO CLIENTE\n");
         return 0;
     }
 
-    // Buscar e validar o cliente
-    Cliente chave_cliente = {0};
-    chave_cliente.id = *id_cliente;
-    Cliente *cliente_encontrado =
-        pesquisarDuplo(bd()->clientes, &chave_cliente, localizar_cliente);
-    if (!cliente_encontrado) {
-      char mensagem[128];
-      snprintf(
-          mensagem,
-          sizeof(mensagem),
-          "CLIENTE NAO ENCONTRADO (id=%d)\n",
-          *id_cliente
-      );
-
-      //▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-      //          EXIBE ALERTA
-      //▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-      alerta("AVISO", mensagem);
-      system("pause");
-      return 0;
-    }
-
-    // Criar nova entrega — use calloc para zerar a struct
+    /* Alocar entrega (alocar_entrega deve usar calloc ou inicializar tudo) */
     Entrega *nova = alocar_entrega();
-  if (!nova) {
-    //▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-    //          EXIBE ALERTA
-    //▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-      alerta("AVISO", "ERRO AO ALOCAR ENTREGA");
-      system("pause");
+    if (!nova) {
+        alerta("AVISO", "ERRO AO ALOCAR ENTREGA");
         return 0;
     }
-    nova->id_produto  = pe->id;
-    nova->valor  = pe->valor;
-    nova->quant  = 1.0;
 
-    strncpy(nova->destinatario, cliente_encontrado->nome, sizeof(nova->destinatario)-1);
-    nova->destinatario[sizeof(nova->destinatario)-1] = '\0';
+    /* Inicializar campos básicos */
+    nova->id_produto = pe->id;
+    nova->valor = pe->valor;
+    nova->quant = 1.0;
 
-    if (imprimir_ficha_cliente) {
-
+    /* Buscar cliente (verifica retorno) */
+    Cliente *cliente_encontrado = buscar_cliente(*id_cliente_ptr);
+    if (!cliente_encontrado) {
+        alerta("ERRO", "CLIENTE NAO ENCONTRADO");
+        free(nova);
+        return 0;
     }
-    printf("\n");
 
-    // Validar entrega (se validar_entrega depender de id_cliente/id_produto/strings, tudo ok)
-    char * mensagem;
-    validar_entrega(nova, mensagem);
+    /* Copiar nome de forma segura */
+    strncpy(nova->destinatario, cliente_encontrado->nome, sizeof(nova->destinatario) - 1);
+    nova->destinatario[sizeof(nova->destinatario) - 1] = '\0';
+
+    /* Preparar buffer de mensagem e validar entrega */
+    char mensagem[256];
+    mensagem[0] = '\0';
+
+    /* Se a sua validar_entrega tem outra assinatura, ajuste aqui */
+    int val_ok = validar_entrega(nova, mensagem);
+    if (!val_ok) {
+        /* mostrar erro e abortar */
+        char warnbuf[256];
+        snprintf(warnbuf, sizeof(warnbuf), "Validacao falhou: %s\n", mensagem);
+        alerta("AVISO", warnbuf);
+        free(nova);
+        return 0;
+    }
+
     imprimir_ficha_entrega(nova, pe);
 
-    // Verifica fila válida antes de enfileirar
+    /* Verifica fila e enfileira */
     Fila *f = bd()->entregas;
     if (!f) {
-      // Se a fila não existe, crie/initializa aqui ou falhe explicitamente.
-      //▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-      //          EXIBE ALERTA
-      //▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-      alerta("AVISO", "FILA DE ENTREGAS NAO INICIALIZADA");
-      system("pause");
-        // opcional: f = bd()->entregas = criar_fila(); // se tiver função
+        alerta("AVISO", "FILA DE ENTREGAS NAO INICIALIZADA");
+        free(nova);
         return 0;
     }
 
     enfileirar(f, nova);
 
+    /* sucesso */
     return nova->id;
 }
 
@@ -387,7 +368,7 @@ void listar_entregas() {
 //==========================================
 
 static void imprimir_carga_relatorio(void *dado) {
-    iprimir_carga(dado, imprimir_entrega);
+    imprimir_carga(dado, imprimir_entrega);
 }
 
 void listar_cargas() {
@@ -418,7 +399,7 @@ void listar_cargas() {
 static void acumular_e_imprimir(void *dado, AcumuladorCarga *acc) {
     Carga *c = dado;
 
-    iprimir_carga(c, imprimir_entrega);
+    imprimir_carga(c, imprimir_entrega);
 
     acc->total_itens += 1;
     acc->soma_valores += c->valor;
@@ -469,7 +450,7 @@ void incluir_entrega_na_carga(int id_entrega, int *id_carga) {
     // ------------------------------------------------------------
     // 3. Se carga não existe, pedir data e procurar carga por data
     // ------------------------------------------------------------
-    char data_carga[16];
+    char data_carga[SIZEDATE];
     int serial_data = 0;
 
     if (!carga_encontrada) {
@@ -560,7 +541,21 @@ void listar_vendas() {
 
 }
 
-void relatorios(){
+void imprimir_cabecalho_historico(){
+  printf("Entregas recem carregadas");
+
+}
+
+void listar_historico() {
+  imprimir_cabecalho_historico();
+  char * destinatario [SIZES];
+  destinatario[0] = "\0";
+  float agregado = 0.0;
+  imprimirFilaAg(((void*)  ((Historico*)bd()->historico )->entrega), iprimir_entrega_ag, destinatario, &agregado);
+  int quanti = qtd_entregas();
+  float soma = somar_entregas();
+  imprimir_rodape_entrega(quanti, soma);
+  system("pause");
 }
 
 //cadastra dados de exemplo

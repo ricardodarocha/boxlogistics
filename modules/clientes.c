@@ -36,7 +36,7 @@ int localizar_cpf(void *a, void *b) {
 }
 
 int validar_cliente(void *dado) {
-    Cliente * p= dado;
+    // Cliente * p= dado;
 
     //return validar_cpf(p->cpf);
     return VALID;
@@ -49,6 +49,7 @@ Cliente *alocar_cliente(void) {
         return NULL;
     }
 
+    memset(cliente, 0, sizeof(Cliente));
     // Valores padrao
     cliente->id = proximo_cliente += 1;
     cliente->nome[0] = '\0';

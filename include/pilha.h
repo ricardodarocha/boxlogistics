@@ -10,5 +10,6 @@ typedef struct {
     NoPilha *topo;
 } Pilha;
 
+Pilha *criarPilha();
 
 #endif

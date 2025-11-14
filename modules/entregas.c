@@ -3,17 +3,7 @@
 #include <string.h>
 
 #include "../app/config.h"
-
-typedef struct {
-    int id;
-    int id_produto;
-    float valor;
-    float quant;
-    float total;
-    char destinatario[SIZES]; //nome do destinatario
-    // char cpf[SIZES];
-    int cpf;
-} Entrega;
+#include "../include/entrega.h"
 
 static int proxima_entrega = 0; //id do proximo codigo que sera gerado pelo sistema = proximo_entrega + 1
 
@@ -54,7 +44,7 @@ Entrega *alocar_entrega(void) {
         perror("Erro ao alocar Entrega");
         return NULL;
     }
-
+    memset(entrega, 0, sizeof(Entrega));
     entrega->id = ++proxima_entrega;
 
     entrega->id_produto = 0;
@@ -69,7 +59,8 @@ Entrega *alocar_entrega(void) {
 
 Entrega *nova_entrega(char *destinatario, int id_produto, float valor, float quant, int cpf) {
     Entrega * result = alocar_entrega();
-    strcpy(result->destinatario, destinatario);
+    strncpy(result->destinatario, destinatario, sizeof(result->destinatario) - 1);
+    result->destinatario[sizeof(result->destinatario) - 1] = '\0';
     result->id_produto = id_produto;
     result->valor = valor;
     result->quant = quant;
@@ -79,18 +70,18 @@ Entrega *nova_entrega(char *destinatario, int id_produto, float valor, float qua
 }
 
 int validar_entrega(void* dado, char* message) {
-    Entrega *e = dado;
-    if (e->valor <= 0) {
-        strcpy(message, "Informe um valor");
-        return INVALID;
-    }
-    if (e->quant <= 0) {
-        strcpy(message, "Informe uma quantidade");
-        return INVALID;
-    }
-    if (e->cpf == 0) {
-        strcpy(message, "Informe um cpf");
-        return INVALID;
-    }
+    // Entrega *e = dado;
+    // if (e->valor <= 0) {
+    //     strcpy(message, "Informe um valor");
+    //     return INVALID;
+    // }
+    // if (e->quant <= 0) {
+    //     strcpy(message, "Informe uma quantidade");
+    //     return INVALID;
+    // }
+    // if (e->cpf == 0) {
+    //     strcpy(message, "Informe um cpf");
+    //     return INVALID;
+    // }
     return VALID;
 }

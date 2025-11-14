@@ -37,8 +37,12 @@ void enable_ansi(void) {
         │   Fina / Estilo Minimal    │   Estética Clean/Slin
         └────────────────────────────┘
 
+        ┌─── ────────────────────────┐
+        │   Go╦hic / Daftpunk        │   Estética Gothic/Dark
+        └──────────────────────────┘─┘
+
         ╔════════════════════════════╗
-        ║  Híbrida ────────────────  ║   Estetica Soft/Hybrid
+        ║  Híbrida ────├───────────  ║   Estetica Soft/Hybrid
         ╚════════════════════════════╝
  */
 
@@ -203,7 +207,7 @@ void input_data_mascarada_validada(const char *title, char *out) {
     printf("\n");
     input_flush();
 }
-void input_data_valid(const char *title, char *out[SIZEDATE]) {
+void input_data_valid(const char *title, char *out) {
     Data _hoje = hoje();
     system("cls");
     imprimir_calendario(_hoje.mes, _hoje.ano);
@@ -388,7 +392,7 @@ void imprimir_calendario(int mes, int ano) {
     for (int i = 0; i < 29; i++) printf("%s", HZ);
     printf("%s\n", TR);
 
-    printf("%*s%s      Calendario %02d/%04d     %s\n", margem, "", VT, mes, ano, VT);
+    printf("%*s%s      Calendario %3s/%04d     %s\n", margem, "", VT, mmm(mes), ano, VT);
 
     printf("%*s%s", margem, "", LS);
     for (int i = 0; i < 29; i++) printf("%s", HZ);

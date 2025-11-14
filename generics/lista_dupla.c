@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/lista_dupla.h"
+#include "../app/config.h"
 /**
 Lista duplamente encadeada generica
  - aceita qualquer struct como conteudo
@@ -36,7 +37,7 @@ void inserirListaDupla(ListaDupla **lista, void *dado) {
 // Pesquisar com funcao cmp(a, b) == 0 → igual
 void *pesquisarDuplo(ListaDupla *lista, void *alfa, int (*cmp)(void *, void *)) {
     for (ListaDupla *cursor = lista; cursor; cursor = cursor->proximo)
-        if (cmp(cursor->dado, alfa) == 0)
+        if (cmp(cursor->dado, alfa) == FOUND)
             return cursor->dado;
     return NULL;
 }

@@ -6,9 +6,10 @@
 #include "../include/visual.h"
 
 const char *menu_principal =
-    "   (1) Cadastrar produtos     (4) Formulario de vendas         \n"
-    "   (2) Cadastrar entregas     (5) Relatorios                   \n"
-    "   (3) Cadastrar cargas       (6) Calendario                   \n"
+    "   (1) Cadastrar produtos    (5) Relatorios                   \n"
+    "   (2) Cadastrar entregas    (6) Calendario                   \n"
+    "   (3) Cadastrar cargas      (7) Ajuda                        \n"
+    "   (4) Formulario de vendas                                   \n"
     "  └──────────────────────────────────────────────────────────────┘\n"
     "   (9) Configuracoes          (0) Sair\n"
     "";
@@ -47,8 +48,11 @@ const char *menu_vendas =
     "   (0) Voltar\n";
 
 const char *menu_relatorio =
-    "   (1) Vendas do Dia\n"
-    "   (2) Estoque Atual\n"
+    "   (1) Cadastro de produtos\n"
+    "   (2) Cadastro de clientes\n"
+    "   (3) Cadastro de entregas\n"
+    "   (4) Cadastro de cargas\n"
+    "   (5) Ultimos carregamentos\n"
     "  └──────────────────────────────────────┘\n"
     "   (0) Voltar\n";
 
@@ -116,9 +120,44 @@ void montar_cargas() {
     }
 }
 
+void relatorios() {
+    int operacao =  exibir_menu(menu_relatorio);
+    switch (operacao) {
+        case 1:
+            executar_listar_produtos();
+            break;
+        case 2:
+            executar_listar_clientes();
+            break;
+        case 3:
+            executar_listar_entregas();
+            break;
+        case 4:
+            executar_listar_cargas();
+            break;
+        case 5:
+            executar_listar_historico(); //ultimas entregas carregadas (pilha)
+            break;
+        case 0:
+            return;
+        default:
+            printf("operacao invalida\n");
+    }
+}
+
 void calendario() {
     Data data = hoje();
     imprimir_calendario(data.mes,data.ano);
+    system("pause");
+}
+
+void exibir_ajuda_geral() {
+    ajuda_geral();
+}
+
+void exibir_configuracoes() {
+    printf("  Voce nao precisa se preocupar com nada. O sistema ja vem previamente configurado. \n");
+    printf("  Sentiu falta de alguma coisa? Entre em contato com nosso suporte.");
     system("pause");
 }
 
@@ -148,11 +187,19 @@ void executar_menu_principal(int * continuar) {
             break;
         case 5:
             boas_vindas_simplificado("RELATORIOS");
-            // relatorios();
+            relatorios();
             break;
         case 6:
             boas_vindas_simplificado("CALENDARIO");
             calendario();
+            break;
+        case 7:
+            boas_vindas_simplificado("AJUDA");
+            exibir_ajuda_geral();
+            break;
+        case 9:
+            boas_vindas_simplificado("CONFIGURACOES");
+            exibir_configuracoes();
             break;
         case 0:
             *continuar = 0;

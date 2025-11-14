@@ -27,10 +27,19 @@ const char* dia_semana(int ddd) {
     return nomes[ddd % 7];
 }
 
-const char* mes(int mm) {
+const char* mm(int mm) {
     static const char* nomes[] = {
         "Janeiro", "Fevereiro", "Marco", "Abril", "Maio", "Junho",
         "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    };
+    if (mm < 1 || mm > 12)
+        return "Invalido";
+    return nomes[mm - 1];
+}
+const char* mmm(int mm) {
+    static const char* nomes[] = {
+        "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
+        "Jul", "Ago", "Set", "Out", "Nov", "Dez"
     };
     if (mm < 1 || mm > 12)
         return "Invalido";
@@ -111,7 +120,7 @@ int serial_de_data(int dia, int mes, int ano) {
     return s;
 }
 
-int serial_de_data_str(const char *data_str[SIZEDATE]) {
+int serial_de_data_str(const char *data_str) {
     int dia, mes, ano;
     if (sscanf(data_str, "%d/%d/%d\0", &dia, &mes, &ano) != 3) {
         return -1;

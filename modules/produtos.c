@@ -45,6 +45,7 @@ Produto *alocar_produto(void) {
         return NULL;
     }
 
+    memset(produto, 0, sizeof(Produto));
     // Valores padrao
     produto->id = proximo_produto += 1;
     produto->nome[0] = '\0';
@@ -55,7 +56,8 @@ Produto *alocar_produto(void) {
 
 Produto *novo_produto(char *nome, float valor) {
     Produto *result = alocar_produto();
-    strcpy(result->nome, nome);
+    strncpy(result->nome, nome, sizeof(result->nome) - 1);
+    result->nome[sizeof(result->nome) - 1] = '\0'; // garante terminação
     result->valor = valor;
     return result;
 }
