@@ -210,7 +210,7 @@ void input_data_mascarada_validada(const char *title, char *out) {
 void input_data_valid(const char *title, char *out) {
     Data _hoje = hoje();
     system("cls");
-    imprimir_calendario(_hoje.mes, _hoje.ano);
+    imprimir_calendario(_hoje.dia, _hoje.mes, _hoje.ano);
 
     char digits[9] = {0};
     int pos = 0;
@@ -361,7 +361,7 @@ void input_senha(const char *title, char *out, size_t max_len) {
     }
 }
 
-void imprimir_calendario(int mes, int ano) {
+void imprimir_calendario(int dia, int mes, int ano) {
     int dias_mes = dias_no_mes(mes, ano);
     int serial_inicio = serial_de_data(1, mes, ano);
     int inicio_semana = serial_inicio%7; // 0=domingo
@@ -392,7 +392,7 @@ void imprimir_calendario(int mes, int ano) {
     for (int i = 0; i < 29; i++) printf("%s", HZ);
     printf("%s\n", TR);
 
-    printf("%*s%s      Calendario %3s/%04d     %s\n", margem, "", VT, mmm(mes), ano, VT);
+    printf("%*s%s     Calendario %3s/%04d     %s\n", margem, "", VT, mmm(mes), ano, VT);
 
     printf("%*s%s", margem, "", LS);
     for (int i = 0; i < 29; i++) printf("%s", HZ);
@@ -413,11 +413,15 @@ void imprimir_calendario(int mes, int ano) {
     for (int s = serial_primeiro; s <= serial_final; s++) {
         if ((s - serial_primeiro) % 7 == 0) printf("%*s%s", margem, "  ", VT);
 
-        int dia = (s < serial_inicio) ? dias_no_mes(mes == 1 ? 12 : mes-1, (mes==1? ano-1: ano)) - (serial_inicio - s -1) :
+        int _dia = (s < serial_inicio) ? dias_no_mes(mes == 1 ? 12 : mes-1, (mes==1? ano-1: ano)) - (serial_inicio - s -1) :
                   (s > serial_inicio + dias_mes -1) ? s - serial_inicio - dias_mes +1 :
                   s - serial_inicio + 1;
 
-        printf(" %2d ", dia);
+        if (_dia==dia) {
+            //imprime com cores invertidas, se for o dia escolhido
+            printf("\033[7m %2d \033[0m", _dia);
+        } else
+            printf(" %2d ",  _dia);
 
         if ((s - serial_primeiro) % 7 == 6) printf(" %s\n", VT);
     }

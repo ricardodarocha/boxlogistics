@@ -147,7 +147,7 @@ void relatorios() {
 
 void calendario() {
     Data data = hoje();
-    imprimir_calendario(data.mes,data.ano);
+    imprimir_calendario(data.dia, data.mes, data.ano);
     system("pause");
 }
 
