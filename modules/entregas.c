@@ -14,7 +14,7 @@ int cursor_proxima_entrega( ) {
 void imprimir_entrega(void *dado) {
     Entrega *e = dado;
     printf("  │ %02d │ %-40s│ %10.2f    │\n",
-           e->id, e->destinatario, e->valor);
+           e->id, e->descricao, e->valor);
 }
 
 void imprimir_cabecalho_entrega() {
@@ -49,6 +49,7 @@ Entrega *alocar_entrega(void) {
 
     entrega->id_produto = 0;
     entrega->destinatario[0] = '\0';
+    entrega->descricao[0] = '\0';
     entrega->cpf = 0;
     entrega->quant = 1.0f;
     entrega->valor = 1.0f;

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <windows.h>
 
+#include "fila.h"
 #include "../include/cadastros.h"
 #include "../include/visual.h"
 #include "../include/calendario.h"
@@ -181,7 +182,10 @@ void executar_cadastro_cargas() {
         printf("\n  ┌───────────┬──────────────────────┐\n");
         printf(  "  │   TICKET  │ %4d                │\n", id_carga);
         printf(  "  └───────────└──────────────────────┘\n");
-        printf(  "  Código de rastreio\n\n\n");
+        printf(  "  Guarde o seu código de rastreio\n\n\n");
+
+        // remove a entrega da fila e registra na lista de historicos
+        arquivar_entrega(remover_entrega(id_entrega), id_carga);
 
         continuar = input_logico("Inserir mais um?");
     } while (continuar);

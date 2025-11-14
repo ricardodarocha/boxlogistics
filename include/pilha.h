@@ -12,4 +12,7 @@ typedef struct {
 
 Pilha *criarPilha();
 
+void empilhar(Pilha *p, void *dado);
+void *desempilhar(Pilha *p);
+
 #endif

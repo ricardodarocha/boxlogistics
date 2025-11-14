@@ -188,7 +188,7 @@ void vender_agora() {
             input_inteiro("ID PRODUTO", &venda->id_produto);
             if (venda->id_produto == 0) {
                 moveXY(5, 17);
-                if (input_logico("Tem certeza que deseja\n │    encerrar?")){
+                if (input_logico("Tem certeza que deseja\n  │  encerrar?")){
                     acao = ACAO_ENCERRAR;
                     continue;
                 }

@@ -18,6 +18,10 @@ void push(Pilha *p, void *dado) {
     p->topo = novo;
 }
 
+void empilhar(Pilha *p, void *dado) {
+    push(p, dado);
+}
+
 void *pop(Pilha *p) {
     if (!p->topo) return NULL;
     NoPilha *removido = p->topo;
@@ -27,6 +31,9 @@ void *pop(Pilha *p) {
     return dado;
 }
 
+void *desempilhar(Pilha *p) {
+    return pop(p);
+}
 void *peek(Pilha *p) {
     return p->topo ? p->topo->dado : NULL;
 }

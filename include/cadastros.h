@@ -50,6 +50,7 @@ int buscar_entrega_id(int id);
 
 //funcao especial para agrupar entrega por destinatario;
 void iprimir_entrega_ag(void *dado,  char * destinatario[SIZES], float * agregado);
+void imprimir_fila_entregas(void * fila_entregas);
 
 void listar_entregas();
 
@@ -58,11 +59,14 @@ void buscar_carga(const int dia);
 void listar_resumo_cargas();
 void listar_cargas();
 
+void * remover_entrega(int id_entrega);
 int inserir_venda(const int id);
 void buscar_venda();
 void listar_vendas();
+void listar_clientes();
+void listar_historico();
 
-void incluir_entrega_na_carga(int id_entrega, int * id_carga);
+void incluir_entrega_na_carga(const int id_entrega, int * id_carga);
 
 typedef struct Motorista {
     int id; //carteira de motorista

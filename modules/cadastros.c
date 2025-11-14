@@ -224,6 +224,8 @@ int inserir_entregas(int id_produto, int *id_cliente_ptr) {
     /* Copiar nome de forma segura */
     strncpy(nova->destinatario, cliente_encontrado->nome, sizeof(nova->destinatario) - 1);
     nova->destinatario[sizeof(nova->destinatario) - 1] = '\0';
+    strncpy(nova->descricao, pe->nome, sizeof(pe->nome) - 1);
+    nova->descricao[sizeof(nova->descricao) - 1] = '\0';
 
     /* Preparar buffer de mensagem e validar entrega */
     char mensagem[256];
@@ -354,18 +356,22 @@ float somar_entregas() {
 
 }
 
-void listar_entregas() {
+void imprimir_fila_entregas(void * fila_entregas) {
   imprimir_cabecalho_entrega();
   char * destinatario [SIZES];
   destinatario[0] = "\0";
   float agregado = 0.0;
-  imprimirFilaAg(bd()->entregas, iprimir_entrega_ag, destinatario, &agregado);
+  imprimirFilaAg(fila_entregas, iprimir_entrega_ag, destinatario, &agregado);
   int quanti = qtd_entregas();
   float soma = somar_entregas();
   imprimir_rodape_entrega(quanti, soma);
   system("pause");
 }
 //==========================================
+
+void listar_entregas() {
+    imprimir_fila_entregas(bd()->entregas);
+}
 
 static void imprimir_carga_relatorio(void *dado) {
     imprimir_carga(dado, imprimir_entrega);
@@ -419,7 +425,31 @@ void buscar_carga(const int dia) {
 
 // encontrado = pesquisarDuplo(bd()->produtos, &chave, localizar_produto
 
-void incluir_entrega_na_carga(int id_entrega, int *id_carga) {
+void * remover_entrega(int id_entrega) {
+  Entrega chave_entrega = {0};
+  chave_entrega.id = id_entrega;
+  return remover(bd()->entregas, &chave_entrega, localizar_entrega);
+}
+
+Historico *novo_historico(Entrega * entrega, Carga * carga) {
+  Historico *result = malloc(sizeof(Historico));
+  if (!result) {
+    perror("malloc");
+    return NULL;
+  }
+
+  // memset(result, 0, sizeof(Historico));
+  result->carga = carga;
+  result->entrega = entrega;
+  return result;
+}
+
+void arquivar_entrega(Entrega * entrega, Carga * carga) {
+  Historico *historico = novo_historico(entrega, carga);
+  empilhar(bd()->historico, historico);
+}
+
+void incluir_entrega_na_carga(const int id_entrega, int *id_carga) {
 
     // ------------------------------------------------------------
     // 1. Buscar entrega
@@ -482,6 +512,7 @@ void incluir_entrega_na_carga(int id_entrega, int *id_carga) {
             fila = criarFila();
             enfileirar(fila, entrega);
             carga_encontrada->entregas = fila;
+            carga_encontrada->valor += entrega->total;
         } else {
             enfileirar(fila, entrega);
         }
@@ -495,6 +526,9 @@ void incluir_entrega_na_carga(int id_entrega, int *id_carga) {
     Carga *nova = alocar_carga();
     nova->id   = serial_data;
     nova->data = serial_data;
+    strncpy(nova->nome, entrega->destinatario, sizeof(entrega->destinatario) - 1);
+    nova->nome[sizeof(entrega->destinatario) - 1] = '\0'; // garante terminação
+    nova->valor = entrega->total;
 
     // Inserir entrega na nova fila
     Fila *nova_fila = criarFila();
@@ -509,7 +543,7 @@ void incluir_entrega_na_carga(int id_entrega, int *id_carga) {
 
 void imprimir_resumo(void * c) {
   Carga *carga = c;
-  printf("  │  %02d │ %-10s     │       │", carga->id, carga->nome, carga->valor);
+  printf("  │  %02d │ %-10s     │       │\n", carga->id, carga->nome, carga->valor);
 }
 
 //imprime apenas os dados basicos

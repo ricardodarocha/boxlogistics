@@ -38,22 +38,38 @@ void *desenfileirar(Fila *f) {
     return dado;
 }
 
-void *remover(Fila *f, void *alfa, int (*cmp)(void*, void*)){
+void *remover(Fila *f, void *alfa, int (*cmp)(void*, void*)) {
     if (!f || !f->inicio) return NULL;
+
     FilaX *anterior = NULL;
-    FilaX *remover = f->inicio;
-    while (remover && cmp(remover->dado, alfa)) {
-        anterior = remover;
-        remover = remover->proximo;
+    FilaX *rem = f->inicio;
+
+    // percorre até achar o item (cmp == 0 indica igualdade)
+    while (rem && cmp(rem->dado, alfa) != 0) {
+        anterior = rem;
+        rem = rem->proximo;
     }
-    if (remover==NULL)  return NULL;
-    void *dado = remover->dado;
-    if (anterior==NULL) {
-        f->inicio = remover->proximo;
-    } else {
-        anterior->proximo = remover->proximo;
+
+    if (!rem) return NULL;  // não encontrou
+
+    void *dado = rem->dado;
+
+    // caso 1: removendo o primeiro nó
+    if (!anterior) {
+        f->inicio = rem->proximo;
+        // se removemos o único nó, ajustar também o fim
+        if (f->inicio == NULL)
+            f->fim = NULL;
     }
-    free(remover);
+    // caso 2: removendo do meio ou fim
+    else {
+        anterior->proximo = rem->proximo;
+        // se removemos o último
+        if (rem == f->fim)
+            f->fim = anterior;
+    }
+
+    free(rem);
     return dado;
 }
 

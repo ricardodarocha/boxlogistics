@@ -25,7 +25,7 @@ void imprimir_cabecalha_carga() {
 void imprimir_carga(void *dado, void (*imprimir_entrega)(void *)) {
     Carga *c = dado;
     printf("  ╠──────────────────────────────────────────────────────────────╣\n");
-    printf("  │ CARGA %03d                                                  │\n", c->id);
+    printf("  │ CARGA %03d   %-40s            │\n", c->id, c->nome);
     printf("  ├──────────────────────────────────────────────────────────────┤\n");
     printf("  │ Data................: %-38s │\n", formatar_data(c->data));
     printf("  │ Valor total.........: %10.2f                             │\n", c->valor);
@@ -44,7 +44,7 @@ void imprimir_carga(void *dado, void (*imprimir_entrega)(void *)) {
         return;
     }
 
-    Fila *fila = (Fila *) c->entregas;
+    Fila *fila = c->entregas;
 
     if (!fila->inicio) {
         printf("│ -- Nenhuma entrega cadastrada --                             │\n");
@@ -96,10 +96,11 @@ Carga *alocar_carga(void) {
     return carga;
 }
 
-void * inserir_nova_carga(void *entrega, int *id_carga) {
+void * inserir_nova_carga(void *entrega, int *id_carga, float valor_entrega) {
     Carga * carga = alocar_carga();
     * id_carga = carga->id;
     carga->entregas = entrega;
+    carga->valor = valor_entrega;
     return carga;
 }
 

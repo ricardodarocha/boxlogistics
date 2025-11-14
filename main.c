@@ -2,33 +2,33 @@
 #include <stdlib.h>
 
 void membros_do_time() {
-    printf("   ╔══════════════════════════════════════════════════════════════╗\n");
-    printf("   ║     ╔══════════════════════╗    ╔══════════════════════╗     ║\n");
-    printf("   ║     ║  Wemerson            ║    ║  Maria Eduarda       ║     ║\n");
-    printf("   ║     ║  Analista            ║    ║  Customer Success    ║     ║\n");
-    printf("   ║     ║  Dev Pleno           ║    ║  Testadora           ║     ║\n");
-    printf("   ║     ╚══════════════════════╝    ╚══════════════════════╝     ║\n");
-    printf("   ║     ╔══════════════════════╗    ╔══════════════════════╗     ║\n");
-    printf("   ║     ║  Agatta              ║    ║  Otavio              ║     ║\n");
-    printf("   ║     ║  Frontend            ║    ║  Database Admin      ║     ║\n");
-    printf("   ║     ║  Designer            ║    ║  ORACLE MVP          ║     ║\n");
-    printf("   ║     ╚══════════════════════╝    ╚══════════════════════╝     ║\n");
-    printf("   ║     ╔══════════════════════╗    ╔══════════════════════╗     ║\n");
-    printf("   ║     ║  Nathan              ║    ║  Guilherme           ║     ║\n");
-    printf("   ║     ║  Product Owner       ║    ║  Scrum Master        ║     ║\n");
-    printf("   ║     ║  Chefe Comercial     ║    ║  Agile Expert        ║     ║\n");
-    printf("   ║     ╚══════════════════════╝    ╚══════════════════════╝     ║\n");
-    printf("   ║     ╔══════════════════════╗    ╔══════════════════════╗     ║\n");
-    printf("   ║     ║  Joao Paulo          ║    ║  Ricardo             ║     ║\n");
-    printf("   ║     ║  Suporte Técnico     ║    ║  Tech Lead           ║     ║\n");
-    printf("   ║     ║  Implantação         ║    ║  Dev Senior          ║     ║\n");
-    printf("   ║     ╚══════════════════════╝    ╚══════════════════════╝     ║\n");
-    printf("   ║     ╔══════════════════════════════════════════════════╗     ║\n");
-    printf("   ║     ║  Professor...  Jacimar Tavares                   ║     ║\n");
-    printf("   ║     ║  Disciplina..  Algoritmos e Estruturas de Dados  ║     ║\n");
-    printf("   ║     ╚══════════════════════════════════════════════════╝     ║\n");
-    printf("   ║                                                              ║\n");
-    printf("   ╚══════════════════════════════════════════════════════════════╝\n");
+    printf("  ╔══════════════════════════════════════════════════════════════╗\n");
+    printf("  ║     ╔══════════════════════╗    ╔══════════════════════╗     ║\n");
+    printf("  ║     ║  Wemerson            ║    ║  Maria Eduarda       ║     ║\n");
+    printf("  ║     ║  Analista            ║    ║  Customer Success    ║     ║\n");
+    printf("  ║     ║  Dev Pleno           ║    ║  Testadora           ║     ║\n");
+    printf("  ║     ╚══════════════════════╝    ╚══════════════════════╝     ║\n");
+    printf("  ║     ╔══════════════════════╗    ╔══════════════════════╗     ║\n");
+    printf("  ║     ║  Agatta              ║    ║  Otavio              ║     ║\n");
+    printf("  ║     ║  Frontend            ║    ║  Database Admin      ║     ║\n");
+    printf("  ║     ║  Designer            ║    ║  ORACLE MVP          ║     ║\n");
+    printf("  ║     ╚══════════════════════╝    ╚══════════════════════╝     ║\n");
+    printf("  ║     ╔══════════════════════╗    ╔══════════════════════╗     ║\n");
+    printf("  ║     ║  Nathan              ║    ║  Guilherme           ║     ║\n");
+    printf("  ║     ║  Product Owner       ║    ║  Scrum Master        ║     ║\n");
+    printf("  ║     ║  Chefe Comercial     ║    ║  Agile Expert        ║     ║\n");
+    printf("  ║     ╚══════════════════════╝    ╚══════════════════════╝     ║\n");
+    printf("  ║     ╔══════════════════════╗    ╔══════════════════════╗     ║\n");
+    printf("  ║     ║  Joao Paulo          ║    ║  Ricardo             ║     ║\n");
+    printf("  ║     ║  Suporte Técnico     ║    ║  Tech Lead           ║     ║\n");
+    printf("  ║     ║  Implantação         ║    ║  Dev Senior          ║     ║\n");
+    printf("  ║     ╚══════════════════════╝    ╚══════════════════════╝     ║\n");
+    printf("  ║     ╔══════════════════════════════════════════════════╗     ║\n");
+    printf("  ║     ║  Professor...  Jacimar Tavares                   ║     ║\n");
+    printf("  ║     ║  Disciplina..  Algoritmos e Estruturas de Dados  ║     ║\n");
+    printf("  ║     ╚══════════════════════════════════════════════════╝     ║\n");
+    printf("  ║                                                              ║\n");
+    printf("  ╚══════════════════════════════════════════════════════════════╝\n");
     printf("\n");
 }
 

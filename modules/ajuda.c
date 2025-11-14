@@ -100,18 +100,17 @@ void ajuda_geral() {
         printf("      ╚════════════════════════════╝\n\n");
 
         printf("      ┌────────────────────────────┐     Estética Clean / Slim\n");
-        printf("      │    Fina / Minimalista      │     Uso leve de bordas.\n");
+        printf("      │    Fine / Minimalista      │     Uso leve de bordas.\n");
         printf("      └────────────────────────────┘\n\n");
 
-        printf("      ┌────────────────────────────┐     Estética Gothic / Dark\n");
-        printf("      │  Go╦hic / Daftpunk Style   │     Aparência futurista/dark.\n");
-        printf("      └────────────────────────────┘\n\n");
+        printf("      ┌──══──────────────—────────═╗     Estética Gothic / Dark\n");
+        printf("      │  Gothic / Daftpunk Style   │     Aparência futurista/dark.\n");
+        printf("      └─────────────────────────┘──┘\n\n");
 
-        printf("      ╔════════════════════════════╗     Estética Soft / Hybrid\n");
-        printf("      ║   Híbrido – Clean + Bold   ║     Mistura clean com elementos premium.\n");
-        printf("      ╚════════════════════════════╝\n\n");
+        printf("      ╔════════════════╦═══════════╗     Estética Soft / Hybrid\n");
+        printf("      ║   Híbrido –────├--- Bold   ║     Mistura clean com elementos premium.\n");
+        printf("      ╚════════════════╩═══════════╝\n\n");
     }
-
 
     printf("  ┌──────────────────────────────────────────────────────────────────┐\n");
     printf("  │                         COPYRIGHT © 2025                         │\n");

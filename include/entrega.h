@@ -9,6 +9,7 @@ typedef struct Entrega {
     float quant;
     float total;
     char destinatario[SIZES]; //nome do destinatario
+    char descricao[SIZES]; //nome do produto
     // char cpf[SIZES];
     int cpf;
 } Entrega;
