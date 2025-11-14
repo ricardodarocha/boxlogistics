@@ -68,10 +68,10 @@ Alguns recursos avançados do sistema incluem
  - [x]  Validação do Usuário (ver se quem esta logando pode ter acesso ao
 sistema)
 - [x]  (1) Cadastrar produtos (id, nome valor)
-- [ ]  (2) Cadastrar entregas (idProduto, CPF destinatário, nome destinatário)
-- [ ]  (3) Cadastrar cadastrar cargas com entregas (idCarga, diaSaidaCaminhao, lista de
+- [x]  (2) Cadastrar entregas (idProduto, CPF destinatário, nome destinatário)
+- [x]  (3) Cadastrar cadastrar cargas com entregas (idCarga, diaSaidaCaminhao, lista de
 entregas)
-- [ ]  (4) Vender produto e mostrar a carga que ele pode entrar. (usar a dataSaidaCaminhao
+- [x]  (4) Vender produto e mostrar a carga que ele pode entrar. (usar a dataSaidaCaminhao
 pra programar a entrega)
 - [x]  (5) Relatórios (imprime as informações cadastradas).
 - [x]  (6) Sair
