@@ -6,6 +6,7 @@ set(CMAKE_C_STANDARD 23)
 include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/app
+        ${CMAKE_CURRENT_SOURCE_DIR}/lite
         ${CMAKE_CURRENT_SOURCE_DIR}/lib
         ${CMAKE_CURRENT_SOURCE_DIR}/modules
         ${CMAKE_CURRENT_SOURCE_DIR}/generics
@@ -16,6 +17,10 @@ set(APP_SOURCES
         app/bd.c
         app/login.c
         app/demo.c
+)
+
+set(LITE_SOURCES
+        lite/main_lite.c
 )
 
 # Fontes da pasta lib/

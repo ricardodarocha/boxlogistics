@@ -4,12 +4,14 @@
 #include "../app/operacoes.c"
 #include "../include/data.h"
 #include "../include/visual.h"
+#include "../lite/main_lite.c"
+
 
 const char *menu_principal =
     "   (1) Cadastrar produtos    (5) Relatorios                   \n"
     "   (2) Cadastrar entregas    (6) Calendario                   \n"
     "   (3) Cadastrar cargas      (7) Ajuda                        \n"
-    "   (4) Formulario de vendas                                   \n"
+    "   (4) Formulario de vendas  (8) Versão Lite                  \n"
     "  └──────────────────────────────────────────────────────────────┘\n"
     "   (9) Configuracoes          (0) Sair\n"
     "";
@@ -151,6 +153,12 @@ void calendario() {
     system("pause");
 }
 
+void exibir_versao_lite() {
+    MenuLogin();
+    MenuPrincipal();
+    system("pause");
+}
+
 void exibir_ajuda_geral() {
     ajuda_geral();
 }
@@ -196,6 +204,10 @@ void executar_menu_principal(int * continuar) {
         case 7:
             boas_vindas_simplificado("AJUDA");
             exibir_ajuda_geral();
+            break;
+        case 8:
+            boas_vindas_simplificado("VERSÃO LITE ");
+            exibir_versao_lite();
             break;
         case 9:
             boas_vindas_simplificado("CONFIGURACOES");
