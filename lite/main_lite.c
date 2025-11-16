@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <windows.h>
 
-
 struct No_Produto* Produtos = NULL;
 struct No_Cliente* Clientes = NULL;
 struct No_Caminhao* Caminhoes = NULL;
@@ -20,8 +19,82 @@ struct No_Arvore_Carga* G_Raiz_Cargas = NULL;
 #include "filaentregas.c"
 #include "arvore_cargas.c"
 
-
 int vOpcao;
+
+void liberarFilaEntregas_main(FilaW* fila) {
+    No_Entregas* atual = fila->frente;
+    No_Entregas* proximo;
+
+    while (atual != NULL) {
+        proximo = atual->proximo;
+        free(atual);
+        atual = proximo;
+    }
+
+    fila->frente = NULL;
+    fila->tras = NULL;
+    fila->tamanho = 0;
+}
+
+void liberarArvoreCargas_main(No_Arvore_Carga* raiz) {
+    if (raiz == NULL) {
+        return;
+    }
+
+    liberarArvoreCargas_main(raiz->esquerda);
+    liberarArvoreCargas_main(raiz->direita);
+
+    liberarFilaEntregas_main(&raiz->dados_carga.entregas_da_carga);
+
+    free(raiz);
+}
+
+void liberarListaProdutos_main(No_Produto** cabeca_ref) {
+    No_Produto* atual = *cabeca_ref;
+    No_Produto* proximo;
+    while (atual != NULL) {
+        proximo = atual->proximo;
+        free(atual);
+        atual = proximo;
+    }
+    *cabeca_ref = NULL;
+}
+
+void liberarListaClientes_main(No_Cliente** cabeca_ref) {
+    No_Cliente* atual = *cabeca_ref;
+    No_Cliente* proximo;
+    while (atual != NULL) {
+        proximo = atual->proximo;
+        free(atual);
+        atual = proximo;
+    }
+    *cabeca_ref = NULL;
+}
+
+void liberarListaCaminhoes_main(No_Caminhao** cabeca_ref) {
+    No_Caminhao* atual = *cabeca_ref;
+    No_Caminhao* proximo;
+    while (atual != NULL) {
+        proximo = atual->proximo;
+        free(atual);
+        atual = proximo;
+    }
+    *cabeca_ref = NULL;
+}
+
+void liberarTodaMemoria() {
+    printf("Limpando toda a memória alocada...\n");
+
+    liberarArvoreCargas_main(G_Raiz_Cargas);
+
+    liberarFilaEntregas_main(&FilaWdeEntregas);
+
+    liberarListaProdutos_main(&Produtos);
+    liberarListaClientes_main(&Clientes);
+    liberarListaCaminhoes_main(&Caminhoes);
+
+    printf("Memória liberada com sucesso.\n\n");
+}
 
 void MenuLogin() {
     char usuario[20];
@@ -30,18 +103,19 @@ void MenuLogin() {
 
     while (logado == 0) {
         imprimirCabecalho("Login");
-        printf("Usuário (admin): ");
+        printf("Usuário..(admin): ");
         scanf(" %19[^\n]", usuario);
-        printf("Senha   (admin): ");
+        printf("Senha....(admin): ");
         scanf(" %19[^\n]", senha);
 
         if (strcmp(usuario, "admin") == 0 && strcmp(senha, "admin") == 0) {
             logado = 1;
-            printf("\nLogin realizado com sucesso!\n\n");
+            printf("\n[SUCESSO] Login realizado com sucesso!\n\n");
             limparTela();
         } else {
-            printf("\nUsuário ou senha inválidos!\n\n");
+            printf("\n[ERRO] Usuário ou senha inválidos!\n\n");
             limparTela();
+            boas_vindas_simplificado("VERSÃO LITE                                            ");
         }
     }
 }
@@ -175,8 +249,8 @@ void MenuPrincipal(){
 
                 G_Raiz_Cargas = inserirCargaNaArvore(G_Raiz_Cargas, novaCarga);
 
-                printf("\nCarga %d (Placa: %s) planejada com sucesso!\n", G_ID_CARGA, cam->vPlaca_Caminhao);
-                printf("Use 'Alocar Entregas' para carregar o caminhão.\n\n");
+                printf("\nCarga %d (Placa: %s) planejada com sucesso!\n\n", G_ID_CARGA, cam->vPlaca_Caminhao);
+                printf("Use 'Alocar Entregas' para carregar o caminhão.\nVoltando ao Menu Inicial...\n\n");
 
                 G_ID_CARGA++;
                 limparTela();
@@ -236,13 +310,13 @@ void MenuPrincipal(){
                 imprimirSubtitulo("ALOCAR ENTREGAS");
 
                 if (G_Raiz_Cargas == NULL) {
-                    printf("ERRO: Nenhuma carga foi planejada ainda.\n");
+                    printf("[ERRO]: Nenhuma carga foi cadastrada ainda.\n\n");
                     limparTela();
                     break;
                 }
 
                 if (verificarFilaWEntregasVazia(&FilaWdeEntregas) == 1) {
-                    printf("ERRO: Nenhuma entrega aguardando na fila geral.\n");
+                    printf("[ERRO]: Nenhuma entrega aguardando na fila geral.\n\n");
                     limparTela();
                     break;
                 }
@@ -278,14 +352,14 @@ void MenuPrincipal(){
                     int sucesso = tentarAlocarEntrega(cargaAlvo, entregaAtual);
 
                     if (sucesso == 1) {
-                        printf("  [OK] Entrega %d alocada.\n", entregaAtual->vId_Entrega);
+                        printf("[OK] Entrega %d alocada.\n", entregaAtual->vId_Entrega);
                         movidas++;
                     } else {
                         enfileirarNoMovido(&FilaWdeEntregas, entregaAtual);
                     }
                 }
 
-                printf("\nAlocação concluída: %d entregas movidas para a Carga %d.\n", movidas, idCarga);
+                printf("\nAlocação concluída: %d entregas movidas para a Carga %d.\nVoltando ao Menu Inicial...\n\n", movidas, idCarga);
                 limparTela();
                 break;
             }
@@ -438,17 +512,12 @@ void MenuPrincipal(){
             }
         }
     } while (vOpcao != 0);
+
     limparTelaSemPause();
-    imprimirCabecalho(" 1.4");
-    printf("Saindo...\nObrigado por usar o sistema BoxLogistics!\n\n");
-    system("pause");
+    imprimirCabecalho(" Lite 1.0");
+    liberarTodaMemoria();
+    printf("Saindo...\nObrigado por usar o sistema Lite BoxLogistics!\n\n");
 }
-
-
-
-
-
-
 
 int main_lite() {
     SetConsoleCP(1252);
@@ -456,8 +525,6 @@ int main_lite() {
 
     MenuLogin();
     MenuPrincipal();
-
-
 
     return 0;
 }

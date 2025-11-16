@@ -206,7 +206,7 @@ void executar_menu_principal(int * continuar) {
             exibir_ajuda_geral();
             break;
         case 8:
-            boas_vindas_simplificado("VERSÃO LITE ");
+            boas_vindas_simplificado("VERSÃO LITE                                            ");
             exibir_versao_lite();
             break;
         case 9:

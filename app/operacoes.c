@@ -12,7 +12,7 @@
 void boas_vindas_simplificado(const char *title) {
 
     printf("  ╔══════════════════════════════════════════════════════════════╗\n");
-    printf("  ║ %-55s      ║\n",  title);
+    printf("  ║ %-55s      ║\n", title);
     printf("  ║ %-35s %25s ║\n", "BOX LOGISTICS", "Versão 0.1 (2025)");
     printf("  ╚══════════════════════════════════════════════════════════════╝\n");
 

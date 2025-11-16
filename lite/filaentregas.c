@@ -91,10 +91,9 @@ void imprimirFilaWEntregas(struct FilaW* FilaW) {
 
     while (atual != NULL) {
         printf("%-5d %-20s %-20s\n", atual->vId_Entrega, atual->vProduto_da_Entrega ? atual->vProduto_da_Entrega->vNomeProd : "N/A", atual->vCliente_Da_Entrega ? atual->vCliente_Da_Entrega->vNome_Cliente : "N/A");
-        //printf("Id. Entrega: %-3d    Nome Destinatario: %-10s   C�digo Produto: %-3d    Nome Produto: %-10s\n", atual->vId_Entrega, atual->vCliente_Da_Entrega->vNome_Cliente, atual->vProduto_da_Entrega->vId_Produto, atual->vProduto_da_Entrega->vNomeProd);
         atual = atual->proximo;
     }
-    printf("\nTotal de %d entrega(s) na FilaW.\n\n", FilaW->tamanho);
+    printf("\nTotal de %d entrega(s) na Fila.\n", FilaW->tamanho);
 }
 
 void enfileirarNoMovido(struct FilaW* FilaW, struct No_Entregas* noMovido) {
