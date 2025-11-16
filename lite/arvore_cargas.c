@@ -90,7 +90,7 @@ Carga* buscarCargaPorId(int id) {
 
 int tentarAlocarEntrega(Carga* carga, No_Entregas* entrega) {
     if (carga == NULL || entrega == NULL || entrega->vProduto_da_Entrega == NULL || carga->caminhao_associado == NULL) {
-        printf("  [FALHA] Erro interno de ponteiro nulo ao alocar.\n");
+        printf("[FALHA] Erro interno de ponteiro nulo ao alocar.\n");
         return 0;
     }
 
@@ -102,12 +102,12 @@ int tentarAlocarEntrega(Carga* carga, No_Entregas* entrega) {
 
     float peso_novo_total = carga->peso_atual_kg + produto->vPeso;
     if (peso_novo_total > caminhao->vCapacidade_Peso_Max) {
-        printf("  [FALHA] Entrega %d (Prod: %s) não coube. MOTIVO: Excesso de PESO.\n", entrega->vId_Entrega, produto->vNomeProd);
+        printf("[FALHA] Entrega %d (Prod: %s) não coube.\nMOTIVO: Excesso de PESO.\n", entrega->vId_Entrega, produto->vNomeProd);
         return 0;
     }
     float volume_novo_total = carga->volume_atual_m3 + volume_produto_m3;
     if (volume_novo_total > volume_max_caminhao_m3) {
-        printf("  [FALHA] Entrega %d (Prod: %s) não coube. MOTIVO: Excesso de VOLUME.\n", entrega->vId_Entrega, produto->vNomeProd);
+        printf("[FALHA] Entrega %d (Prod: %s) não coube.\nMOTIVO: Excesso de VOLUME.\n", entrega->vId_Entrega, produto->vNomeProd);
         return 0;
     }
 
