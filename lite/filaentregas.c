@@ -33,7 +33,7 @@ int verificarFilaWEntregasVazia(struct FilaW* FilaW) {
 struct No_Entregas* criarNo_Entrega(int vId_Entrega, struct No_Produto* vProduto_da_Entrega, struct No_Cliente* vCliente_Da_Entrega){
     No_Entregas* novoNo = (struct No_Entregas*) malloc (sizeof(struct No_Entregas));
     if (novoNo == NULL) {
-        printf("Erro ao alocar memoria");
+        printf("    Erro ao alocar memoria");
         return NULL;
     }
     novoNo->vId_Entrega = vId_Entrega;
@@ -63,7 +63,7 @@ void enfileirarEntrega(struct FilaW* FilaW, int vId_Entrega, No_Produto* vProdut
 
 No_Entregas* desenfileirarEntregas(struct FilaW* FilaW) {
     if (verificarFilaWEntregasVazia(FilaW) == 1) {
-        printf("\nNenhuma entrega para desenfileirar\n\n");
+        printf("\n    Nenhuma entrega para desenfileirar\n\n");
         return NULL;
     }
 
@@ -81,19 +81,19 @@ No_Entregas* desenfileirarEntregas(struct FilaW* FilaW) {
 
 void imprimirFilaWEntregas(struct FilaW* FilaW) {
     if (verificarFilaWEntregasVazia(FilaW) == 1) {
-        printf("\nNenhuma entrega para desenfileirar\n\n");
+        printf("\n    Nenhuma entrega para desenfileirar\n\n");
         return;
     }
 
     struct No_Entregas* atual = FilaW->frente;
 
-    printf("%-5s %-20s %-20s\n", "ID", "Produto", "Cliente");
+    printf("    %-5s %-20s %-20s\n", "ID", "Produto", "Cliente");
 
     while (atual != NULL) {
-        printf("%-5d %-20s %-20s\n", atual->vId_Entrega, atual->vProduto_da_Entrega ? atual->vProduto_da_Entrega->vNomeProd : "N/A", atual->vCliente_Da_Entrega ? atual->vCliente_Da_Entrega->vNome_Cliente : "N/A");
+        printf("     %-5d %-20s %-20s\n", atual->vId_Entrega, atual->vProduto_da_Entrega ? atual->vProduto_da_Entrega->vNomeProd : "N/A", atual->vCliente_Da_Entrega ? atual->vCliente_Da_Entrega->vNome_Cliente : "N/A");
         atual = atual->proximo;
     }
-    printf("\nTotal de %d entrega(s) na Fila.\n", FilaW->tamanho);
+    printf("\n    Total de %d entrega(s) na Fila.\n", FilaW->tamanho);
 }
 
 void enfileirarNoMovido(struct FilaW* FilaW, struct No_Entregas* noMovido) {

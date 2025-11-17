@@ -43,16 +43,16 @@ void imprimirCargasEmOrdem(No_Arvore_Carga* raiz) {
         Carga* dadosCarga = &raiz->dados_carga;
         No_Caminhao* cam = dadosCarga->caminhao_associado;
 
-        printf("\n--- CARGA ID: %d (Placa: %s) ---\n", dadosCarga->idCarga, cam->vPlaca_Caminhao);
-        printf("  Data Saída: %s\n", dadosCarga->diaSaida);
+        printf("\n    --- CARGA ID: %d (Placa: %s) ---\n", dadosCarga->idCarga, cam->vPlaca_Caminhao);
+        printf("    Data Saída: %s\n", dadosCarga->diaSaida);
 
-        printf("  Peso: %.2f Kg / %.2f Kg (%.1f%%)\n",
+        printf("    Peso: %.2f Kg / %.2f Kg (%.1f%%)\n",
                dadosCarga->peso_atual_kg, cam->vCapacidade_Peso_Max,
                (dadosCarga->peso_atual_kg / cam->vCapacidade_Peso_Max) * 100.0);
 
         float vol_max = calcularVolumeCaminhao(cam);
 
-        printf("  Volume: %.2f m³ / %.2f m³ (%.1f%%)\n",
+        printf("    Volume: %.2f m³ / %.2f m³ (%.1f%%)\n",
                dadosCarga->volume_atual_m3, vol_max,
                (dadosCarga->volume_atual_m3 / vol_max) * 100.0);
 
@@ -90,7 +90,7 @@ Carga* buscarCargaPorId(int id) {
 
 int tentarAlocarEntrega(Carga* carga, No_Entregas* entrega) {
     if (carga == NULL || entrega == NULL || entrega->vProduto_da_Entrega == NULL || carga->caminhao_associado == NULL) {
-        printf("[FALHA] Erro interno de ponteiro nulo ao alocar.\n");
+        printf("    [FALHA] Erro interno de ponteiro nulo ao alocar.\n");
         return 0;
     }
 
@@ -102,12 +102,12 @@ int tentarAlocarEntrega(Carga* carga, No_Entregas* entrega) {
 
     float peso_novo_total = carga->peso_atual_kg + produto->vPeso;
     if (peso_novo_total > caminhao->vCapacidade_Peso_Max) {
-        printf("[FALHA] Entrega %d (Prod: %s) não coube.\nMOTIVO: Excesso de PESO.\n", entrega->vId_Entrega, produto->vNomeProd);
+        printf("    [FALHA] Entrega %d (Prod: %s) não coube.\nMOTIVO: Excesso de PESO.\n", entrega->vId_Entrega, produto->vNomeProd);
         return 0;
     }
     float volume_novo_total = carga->volume_atual_m3 + volume_produto_m3;
     if (volume_novo_total > volume_max_caminhao_m3) {
-        printf("[FALHA] Entrega %d (Prod: %s) não coube.\nMOTIVO: Excesso de VOLUME.\n", entrega->vId_Entrega, produto->vNomeProd);
+        printf("    [FALHA] Entrega %d (Prod: %s) não coube.\nMOTIVO: Excesso de VOLUME.\n", entrega->vId_Entrega, produto->vNomeProd);
         return 0;
     }
 

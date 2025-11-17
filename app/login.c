@@ -12,7 +12,7 @@
 char _login[INPUTSIZE];
 
 void boas_vindas_ao_sistema(const char *login) {
-    printf("\nBem vindo ao sistema %s\n", login);
+    printf("\nBem vindo %s\n", login);
 }
 
 int confere(const char *a,const char *b) {

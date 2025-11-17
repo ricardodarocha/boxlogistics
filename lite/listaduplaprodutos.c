@@ -27,7 +27,7 @@ float calcularVolumeProduto(No_Produto* produto){
 No_Produto* criarWProduto(int vId_Produto, const char *vNomeProd, float vValorProd, float vPeso, float vAltura, float vComprimento, float vProfundidade) {
     No_Produto* novoNo = (No_Produto*)malloc(sizeof(No_Produto));
     if (novoNo == NULL) {
-        printf("Erro na alocação de mem�ria!\n");
+        printf("    Erro na alocação de mem�ria!\n");
         return NULL;
     }
 
@@ -53,18 +53,18 @@ void inserirProdutoNoFimLista(No_Produto** cabeca_ref) {
     float vComprimento;
     float vProfundidade;
 
-    printf("Código: %d\n", vId_Produto);
-    printf("Nome: ");
+    printf("        Código: %d\n", vId_Produto);
+    printf("        Nome: ");
     scanf(" %24[^\n]", vNomeProd);
-    printf("Preço: R$");
+    printf("        Preço: R$");
     scanf("%f", &vValorProd);
-    printf("Peso (KG): ");
+    printf("        Peso (KG): ");
     scanf("%f", &vPeso);
-    printf("Altura (cm): ");
+    printf("        Altura (cm): ");
     scanf("%f", &vAltura);
-    printf("Comprimento (cm): ");
+    printf("        Comprimento (cm): ");
     scanf("%f", &vComprimento);
-    printf("Profundidade (cm): ");
+    printf("        Profundidade (cm): ");
     scanf("%f", &vProfundidade);
 
     No_Produto* novoNo = criarWProduto(vId_Produto, vNomeProd, vValorProd, vPeso, vAltura, vComprimento, vProfundidade);
@@ -99,15 +99,15 @@ No_Produto* buscarProdutoPorId(No_Produto* cabeca_ref, int id) {
 
 void imprimirProdutos(No_Produto* cabeca_ref) {
 
-    printf("%-5s %-20s %-10s %-10s %-10s\n", "ID", "Nome", "Preço", "Peso(Kg)", "Volume(m³)");
+    printf("    %-5s %-20s %-10s %-10s %-10s\n", "ID", "Nome", "Preço", "Peso(Kg)", "Volume(m³)");
 
     while (cabeca_ref != NULL) {
-        printf("%-5d %-20s R$%-8.2f %-10.2f %-10.4f\n", cabeca_ref->vId_Produto, cabeca_ref->vNomeProd, cabeca_ref->vValorProd, cabeca_ref->vPeso, calcularVolumeProduto(cabeca_ref));
+        printf("    %-5d %-20s R$%-8.2f %-10.2f %-10.4f\n", cabeca_ref->vId_Produto, cabeca_ref->vNomeProd, cabeca_ref->vValorProd, cabeca_ref->vPeso, calcularVolumeProduto(cabeca_ref));
         cabeca_ref = cabeca_ref->proximo;
     }
 }
 
 /*void imprimirProdutosSelecionado(No_Produto* ProdutoSelecionado) {
-    printf("%-5s %-20s %-10s %-10s %-10s\n", "ID", "Nome", "Pre�o", "Peso(Kg)", "Volume(m�)");
-    printf("%-5d %-20s R$%-8.2f %-10.2f %-10.4f\n", ProdutoSelecionado->vId_Produto, ProdutoSelecionado->vNomeProd, ProdutoSelecionado->vValorProd, ProdutoSelecionado->vPeso, calcularVolumeProduto(ProdutoSelecionado));
+    printf("    %-5s %-20s %-10s %-10s %-10s\n", "ID", "Nome", "Pre�o", "Peso(Kg)", "Volume(m�)");
+    printf("    %-5d %-20s R$%-8.2f %-10.2f %-10.4f\n", ProdutoSelecionado->vId_Produto, ProdutoSelecionado->vNomeProd, ProdutoSelecionado->vValorProd, ProdutoSelecionado->vPeso, calcularVolumeProduto(ProdutoSelecionado));
 }*/

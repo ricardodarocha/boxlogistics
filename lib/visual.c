@@ -25,6 +25,20 @@ void enable_ansi(void) {
 #endif
 }
 
+void boas_vindas_simplificado(const char *title) {
+
+    printf("\n  ╔══════════════════════════════════════════════════════════════╗\n");
+    printf("  ║ %-55s       \n", title);
+    printf("  ║ %-35s %25s ║\n", "BOX LOGISTICS", "Versão 0.1 (2025)");
+    printf("  ╚══════════════════════════════════════════════════════════════╝\n");
+
+    // printf("╔═════════════════════════════════════════════════════════════════════╗\n");
+    // printf("║                        OPERACAO DE VENDAS                           ║
+    // printf("║ BOX LOGISTICS                                (Versão 0.1 2025)      ║
+    // printf("╚═════════════════════════════════════════════════════════════════════╝\n");
+
+}
+
 #define margem 4
 #define vert 2
 
