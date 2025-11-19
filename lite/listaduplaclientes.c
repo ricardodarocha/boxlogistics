@@ -15,7 +15,7 @@ typedef struct No_Cliente {
 No_Cliente* CriarNoCliente(int vId_Cliente, const char *vNome_Cliente, const char *vCPF_Cliente) {
     No_Cliente* novoNo = (No_Cliente*)malloc(sizeof(No_Cliente));
     if (novoNo == NULL) {
-        printf("Erro na alocação de memória!\n");
+        printf("    Erro na alocação de memória!\n");
         return NULL;
     }
 
@@ -33,10 +33,10 @@ void inserirClienteNoFimLista(No_Cliente** cabeca_ref) {
     char vNome_Cliente[25];
     char vCPF_Cliente[15];
 
-    printf("Código: %d\n", vId_Cliente);
-    printf("Digite o nome do cliente: ");
+    printf("        Código: %d\n", vId_Cliente);
+    printf("        Digite o nome do cliente: ");
     scanf(" %24[^\n]s", vNome_Cliente);
-    printf("Digite o CPF do cliente: ");
+    printf("        Digite o CPF do cliente: ");
     scanf(" %14[^\n]s", vCPF_Cliente);
     No_Cliente* novoNo = CriarNoCliente(vId_Cliente, vNome_Cliente, vCPF_Cliente);
     vId_Cliente ++;
@@ -67,7 +67,7 @@ No_Cliente* buscarClientePorId(No_Cliente* cabeca_ref, int id) {
 
 void imprimirClientes(No_Cliente* cabeca_ref) {
     while (cabeca_ref != NULL) {
-        printf("Id.: %-3d    Cliente: %-23s   CPF: %-14s\n", cabeca_ref->vId_Cliente, cabeca_ref->vNome_Cliente, cabeca_ref->vCPF_Cliente);
+        printf("        Id.: %-3d    Cliente: %-23s   CPF: %-14s\n", cabeca_ref->vId_Cliente, cabeca_ref->vNome_Cliente, cabeca_ref->vCPF_Cliente);
         cabeca_ref = cabeca_ref->proximo;
     }
 }

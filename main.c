@@ -50,7 +50,7 @@ void volte_sempre() {
 
 int le_parametros(int argc, char * argv[]) {
     if (argc == 1) {
-        printf("Nenhum parâmetro informado.\n");
+        printf("Nenhum parametro informado.\n");
         return 0;
     }
 

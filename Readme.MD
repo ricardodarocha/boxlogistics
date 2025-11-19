@@ -11,7 +11,6 @@ Membros do time e funções
 
 ```
    ╔══════════════════════════════════════════════════════════════╗
-   ║                                                              ║
    ║     ╔══════════════════════╗    ╔══════════════════════╗     ║
    ║     ║  Wemerson            ║    ║  Maria Eduarda       ║     ║
    ║     ║  Analista            ║    ║  Customer Success    ║     ║
@@ -23,11 +22,19 @@ Membros do time e funções
    ║     ║  Designer            ║    ║  ORACLE MVP          ║     ║
    ║     ╚══════════════════════╝    ╚══════════════════════╝     ║
    ║     ╔══════════════════════╗    ╔══════════════════════╗     ║
-   ║     ║  Nathan              ║    ║  Ricardo             ║     ║
-   ║     ║  Product Owner       ║    ║  Tech Lead           ║     ║
-   ║     ║  Chefe Comercial     ║    ║  Dev Senior          ║     ║
+   ║     ║  Nathan              ║    ║  Guilherme           ║     ║
+   ║     ║  Product Owner       ║    ║  Scrum Master        ║     ║
+   ║     ║  Chefe Comercial     ║    ║  Agile Expert        ║     ║
    ║     ╚══════════════════════╝    ╚══════════════════════╝     ║
-   ║                                                              ║
+   ║     ╔══════════════════════╗    ╔══════════════════════╗     ║
+   ║     ║  Joao Paulo          ║    ║  Ricardo             ║     ║
+   ║     ║  Suporte Técnico     ║    ║  Tech Lead           ║     ║
+   ║     ║  Implantação         ║    ║  Dev Senior          ║     ║
+   ║     ╚══════════════════════╝    ╚══════════════════════╝     ║
+   ║     ╔══════════════════════════════════════════════════╗     ║
+   ║     ║  Professor...  Jacimar Tavares                   ║     ║
+   ║     ║  Disciplina..  Algoritmos e Estruturas de Dados  ║     ║
+   ║     ╚══════════════════════════════════════════════════╝     ║   ║                                                              
    ╚══════════════════════════════════════════════════════════════╝
 ```
 

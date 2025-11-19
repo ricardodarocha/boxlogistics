@@ -17,7 +17,7 @@ typedef struct No_Caminhao {
 No_Caminhao* CriarNoCaminhao(int vId_Caminhao, const char *vPlaca_Caminhao, float vCapacidade_Peso_Max, float vAltura_Bau, float vLargura_Bau, float vComprimento_Bau) {
     No_Caminhao* novoNo = (No_Caminhao*)malloc(sizeof(No_Caminhao));
     if (novoNo == NULL) {
-        printf("Erro na alocação de memória!\n");
+        printf("    Erro na alocação de memória!\n");
         return NULL;
     }
 
@@ -41,16 +41,16 @@ void inserirCaminhoesNoFimLista(No_Caminhao** cabeca_ref) {
     float vLargura_Bau;
     float vComprimento_Bau;
 
-    printf("Código: %d\n", vId_Caminhao);
-    printf("Placa: ");
+    printf("        Código: %d\n", vId_Caminhao);
+    printf("        Placa: ");
     scanf(" %9[^\n]s", vPlaca_Caminhao);
-    printf("Capacidade Peso(KG): ");
+    printf("        Capacidade Peso(KG): ");
     scanf("%f", &vCapacidade_Peso_Max);
-    printf("Altura Baú (cm): ");
+    printf("        Altura Baú (cm): ");
     scanf("%f", &vAltura_Bau);
-    printf("largura Baú (cm): ");
+    printf("        largura Baú (cm): ");
     scanf("%f", &vLargura_Bau);
-    printf("Comprimento Baú (cm): ");
+    printf("        Comprimento Baú (cm): ");
     scanf("%f", &vComprimento_Bau);
 
 
@@ -85,10 +85,10 @@ float calcularVolumeCaminhao(No_Caminhao* caminhao) {
 
 void imprimirCaminhoes(No_Caminhao* cabeca_ref) {
 
-    printf("%-5s %-10s %-15s %-15s\n", "ID", "Placa", "Peso Max (Kg)", "Volume Max (m³)");
+    printf("    %-5s %-10s %-15s %-15s\n", "ID", "Placa", "Peso Max (Kg)", "Volume Max (m³)");
 
     while (cabeca_ref != NULL) {
-        printf("%-5d %-10s %-15.2f %-15.2f\n", cabeca_ref->vId_Caminhao, cabeca_ref->vPlaca_Caminhao, cabeca_ref->vCapacidade_Peso_Max, calcularVolumeCaminhao(cabeca_ref));
+        printf("    %-5d %-10s %-15.2f %-15.2f\n", cabeca_ref->vId_Caminhao, cabeca_ref->vPlaca_Caminhao, cabeca_ref->vCapacidade_Peso_Max, calcularVolumeCaminhao(cabeca_ref));
         cabeca_ref = cabeca_ref->proximo;
     }
 }

@@ -1,5 +1,5 @@
 
-#include <locale.h>
+// #include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>

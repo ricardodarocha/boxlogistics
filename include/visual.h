@@ -3,6 +3,8 @@
 
 void enable_ansi(void);
 
+void boas_vindas_simplificado(const char *title);
+
 int exibir_menu(const char *operacoes);
 
 void input_string(const char *prompt, char *out, size_t size);
