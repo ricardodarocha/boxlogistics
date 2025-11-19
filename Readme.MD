@@ -3,8 +3,6 @@
 BOX LOGISTICS é uma startup mineira em desenvolvimento de sistemas retrô para o terminal   
 TUI Based applications - Work Forever !!!
 
-![](https://github.com/ricardodarocha/boxlogistics/blob/main/telas/box.PNG)
-
 ## Time
 
 Membros do time e funções
